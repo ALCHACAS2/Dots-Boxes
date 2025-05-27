@@ -12,29 +12,37 @@ function Lobby() {
   const socket = useSocket();
 
   useEffect(() => {
-  socket.on("startGame", () => {
-    console.log("Recibido startGame");
-    navigate("/game", {
-      state: {
-        playerName,
-        roomCode,
-      },
+    // Escuchar cuando se actualiza la lista de jugadores
+    socket.on("playersUpdate", (updatedPlayers) => {
+      console.log("Jugadores actualizados:", updatedPlayers);
+      setPlayers(updatedPlayers);
     });
-  });
 
-  socket.on("roomFull", () => {
-    alert("La sala está llena.");
-  });
+    socket.on("startGame", (playersArray) => {
+      console.log("Recibido startGame", playersArray);
+      navigate("/game", {
+        state: {
+          playerName,
+          roomCode,
+          players: playersArray, // El servidor envía directamente el array de jugadores
+        },
+      });
+    });
 
-  return () => {
-    socket.off("startGame");
-    socket.off("roomFull");
-  };
-}, []);
+    socket.on("roomFull", () => {
+      alert("La sala está llena.");
+    });
 
+    return () => {
+      socket.off("startGame");
+      socket.off("roomFull");
+      socket.off("playersUpdate");
+    };
+  }, [navigate, playerName, roomCode, players]);
 
   const handleJoin = () => {
     if (!playerName || !roomCode) return;
+    console.log("Intentando unirse a sala:", { roomCode, playerName });
     socket.emit("joinRoom", { roomCode, name: playerName });
   };
 
@@ -54,6 +62,15 @@ function Lobby() {
         onChange={(e) => setRoomCode(e.target.value)}
       />
       <button onClick={handleJoin}>Unirse</button>
+      
+      {players.length > 0 && (
+        <div>
+          <h3>Jugadores en la sala:</h3>
+          {players.map((player, index) => (
+            <div key={index}>{player.name}</div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
