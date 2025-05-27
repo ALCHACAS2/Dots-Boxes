@@ -28,13 +28,6 @@ const GameBoard = () => {
     const [turnIndex, setTurnIndex] = useState(0);
     const [scores, setScores] = useState({});
     const [opponentName, setOpponentName] = useState("Tu oponente");
-    const [gameState, setGameState] = useState({
-        horizontalLines: Array(GRID_SIZE + 1).fill(null).map(() => Array(GRID_SIZE).fill(false)),
-        verticalLines: Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE + 1).fill(false)),
-        boxes: Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null)),
-        turnIndex: 0,
-        scores: {}
-    });
 
     useEffect(() => {
         if (players.length === 2) {
@@ -47,22 +40,25 @@ const GameBoard = () => {
                 initialScores[player.name] = 0;
             });
             setScores(initialScores);
-            setGameState(prev => ({ ...prev, scores: initialScores }));
         }
     }, [players, playerName]);
 
     const isMyTurn = players.length === 2 && players[turnIndex]?.name === playerName;
 
     useEffect(() => {
-        socket.on("opponent_move", (move) => {
-            console.log("Movimiento del oponente recibido:", move);
-            applyMove(move, false);
+        socket.on("opponent_move", (moveData) => {
+            console.log("Movimiento del oponente recibido:", moveData);
+            // Aplicar directamente el estado recibido del servidor
+            if (moveData.horizontalLines) setHorizontalLines(moveData.horizontalLines);
+            if (moveData.verticalLines) setVerticalLines(moveData.verticalLines);
+            if (moveData.boxes) setBoxes(moveData.boxes);
+            if (moveData.scores) setScores(moveData.scores);
+            if (moveData.newTurnIndex !== undefined) setTurnIndex(moveData.newTurnIndex);
         });
 
         socket.on("game_state", (newGameState) => {
             console.log("Estado del juego recibido:", newGameState);
             if (newGameState) {
-                setGameState(newGameState);
                 setTurnIndex(newGameState.turnIndex || 0);
                 if (newGameState.scores) setScores(newGameState.scores);
                 if (newGameState.horizontalLines) setHorizontalLines(newGameState.horizontalLines);
@@ -102,7 +98,7 @@ const GameBoard = () => {
         return { updatedBoxes, boxesCompleted };
     };
 
-    const applyMove = (move, isLocal) => {
+    const applyMove = (move, newTurnIndex = null, newScores = null, isLocal) => {
         const { type, row, col } = move;
 
         console.log(`Aplicando movimiento: ${type} en [${row}][${col}], local: ${isLocal}`);
@@ -121,7 +117,7 @@ const GameBoard = () => {
         const newHorizontal = horizontalLines.map(row => [...row]);
         const newVertical = verticalLines.map(row => [...row]);
         const newBoxes = boxes.map(row => [...row]);
-        const newScores = { ...scores };
+        let updatedScores = newScores ? { ...newScores } : { ...scores };
 
         // Aplicar el movimiento
         if (type === "h") {
@@ -135,34 +131,48 @@ const GameBoard = () => {
         // Verificar si se completaron cajas
         const { updatedBoxes, boxesCompleted } = checkBoxCompletion(newHorizontal, newVertical, newBoxes);
 
-        // Actualizar scores si se completaron cajas
-        const currentPlayer = players[turnIndex]?.name;
-        if (boxesCompleted > 0 && currentPlayer) {
-            newScores[currentPlayer] = (newScores[currentPlayer] || 0) + boxesCompleted;
-            console.log(`${currentPlayer} completó ${boxesCompleted} caja(s). Score: ${newScores[currentPlayer]}`);
+        let finalTurnIndex = turnIndex;
+
+        // Solo calcular scores y cambio de turno si es un movimiento local
+        if (isLocal) {
+            // Actualizar scores si se completaron cajas
+            const currentPlayer = players[turnIndex]?.name;
+            if (boxesCompleted > 0 && currentPlayer) {
+                updatedScores[currentPlayer] = (updatedScores[currentPlayer] || 0) + boxesCompleted;
+                console.log(`${currentPlayer} completó ${boxesCompleted} caja(s). Score: ${updatedScores[currentPlayer]}`);
+            }
+
+            // Cambiar turno solo si no se completó ninguna caja
+            if (boxesCompleted === 0) {
+                finalTurnIndex = (turnIndex + 1) % 2;
+                console.log(`Cambiando turno al jugador ${finalTurnIndex}: ${players[finalTurnIndex]?.name}`);
+            } else {
+                console.log(`${currentPlayer} mantiene el turno por completar caja(s)`);
+                finalTurnIndex = turnIndex; // Mantener el turno actual
+            }
+        } else {
+            // Si es un movimiento remoto, usar el turnIndex recibido
+            finalTurnIndex = newTurnIndex !== null ? newTurnIndex : turnIndex;
         }
 
         // Actualizar estados
         setHorizontalLines(newHorizontal);
         setVerticalLines(newVertical);
         setBoxes(updatedBoxes);
-        setScores(newScores);
+        setScores(updatedScores);
+        setTurnIndex(finalTurnIndex);
 
-        // Cambiar turno solo si no se completó ninguna caja
-        if (boxesCompleted === 0) {
-            const newTurnIndex = (turnIndex + 1) % 2;
-            setTurnIndex(newTurnIndex);
-            console.log(`Cambiando turno al jugador ${newTurnIndex}: ${players[newTurnIndex]?.name}`);
-        } else {
-            console.log(`${currentPlayer} mantiene el turno por completar caja(s)`);
-        }
-
-        // Si es un movimiento local, enviarlo al oponente
+        // Si es un movimiento local, enviarlo al oponente con toda la información necesaria
         if (isLocal) {
             console.log("Enviando movimiento al servidor");
             socket.emit("make_move", {
                 roomCode: roomCode.trim().toLowerCase(),
-                move
+                move,
+                newTurnIndex: finalTurnIndex,
+                scores: updatedScores,
+                horizontalLines: newHorizontal,
+                verticalLines: newVertical,
+                boxes: updatedBoxes
             });
         }
     };
@@ -185,7 +195,7 @@ const GameBoard = () => {
 
         const move = { type, row, col };
         console.log("Haciendo movimiento:", move);
-        applyMove(move, true);
+        applyMove(move, null, null, true);
     };
 
     const renderBoard = () => {
@@ -272,13 +282,14 @@ const GameBoard = () => {
     const totalBoxes = GRID_SIZE * GRID_SIZE;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
+    const currentPlayerName = players[turnIndex]?.name;
 
     return (
         <div className="game-container">
             <h2>Dots and Boxes</h2>
             <div className="game-info">
                 <p><strong>Sala:</strong> {roomCode}</p>
-                <p><strong>Turno de:</strong> {isMyTurn ? "Tú" : opponentName}</p>
+                <p><strong>Turno de:</strong> {currentPlayerName === playerName ? "Tú" : currentPlayerName}</p>
                 {gameFinished && <p><strong>¡Juego terminado!</strong></p>}
             </div>
             <div className="scores">
@@ -295,6 +306,7 @@ const GameBoard = () => {
             <div className="debug-info" style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
                 <p>Cajas completadas: {completedBoxes}/{totalBoxes}</p>
                 <p>Turno actual: {turnIndex} ({players[turnIndex]?.name})</p>
+                <p>¿Es mi turno?: {isMyTurn ? 'Sí' : 'No'}</p>
             </div>
         </div>
     );
