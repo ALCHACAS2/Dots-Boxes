@@ -1,7 +1,7 @@
 // src/socket.js
 import { io } from "socket.io-client";
 
-const URL = process.env.REACT_APP_SERVER_UR || "http://localhost:3001";
+const URL = process.env.REACT_APP_SERVER_URL || "http://localhost:3001";
 console.log("prue")
 console.log(URL)
 console.log("ba")
