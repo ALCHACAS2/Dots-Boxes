@@ -4,30 +4,36 @@ import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import "./GameBoard.css";
 
-const GRID_SIZE = 10; // Tamaño del tablero (3x3 cajas)
-
 const GameBoard = () => {
     const location = useLocation();
-    const { playerName, roomCode, players = [] } = location.state || {};
+    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
     const socket = useSocket();
 
     console.log("Location state:", location.state);
     console.log("Players:", players);
-    console.log("Players length:", players?.length);
+    console.log("Grid Size:", initialGridSize);
 
+    const [gridSize, setGridSize] = useState(initialGridSize);
     const [horizontalLines, setHorizontalLines] = useState(
-        Array(GRID_SIZE + 1).fill(null).map(() => Array(GRID_SIZE).fill(false))
+        Array(gridSize + 1).fill(null).map(() => Array(gridSize).fill(false))
     );
     const [verticalLines, setVerticalLines] = useState(
-        Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE + 1).fill(false))
+        Array(gridSize).fill(null).map(() => Array(gridSize + 1).fill(false))
     );
     const [boxes, setBoxes] = useState(
-        Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null))
+        Array(gridSize).fill(null).map(() => Array(gridSize).fill(null))
     );
 
     const [turnIndex, setTurnIndex] = useState(0);
     const [scores, setScores] = useState({});
     const [opponentName, setOpponentName] = useState("Tu oponente");
+
+    // Actualizar arrays cuando cambie el tamaño del grid
+    useEffect(() => {
+        setHorizontalLines(Array(gridSize + 1).fill(null).map(() => Array(gridSize).fill(false)));
+        setVerticalLines(Array(gridSize).fill(null).map(() => Array(gridSize + 1).fill(false)));
+        setBoxes(Array(gridSize).fill(null).map(() => Array(gridSize).fill(null)));
+    }, [gridSize]);
 
     useEffect(() => {
         if (players.length === 2) {
@@ -64,6 +70,7 @@ const GameBoard = () => {
                 if (newGameState.horizontalLines) setHorizontalLines(newGameState.horizontalLines);
                 if (newGameState.verticalLines) setVerticalLines(newGameState.verticalLines);
                 if (newGameState.boxes) setBoxes(newGameState.boxes);
+                if (newGameState.gridSize) setGridSize(newGameState.gridSize);
             }
         });
 
@@ -78,8 +85,8 @@ const GameBoard = () => {
         const updatedBoxes = [...newBoxes.map(row => [...row])];
         const currentPlayer = players[turnIndex]?.name;
 
-        for (let r = 0; r < GRID_SIZE; r++) {
-            for (let c = 0; c < GRID_SIZE; c++) {
+        for (let r = 0; r < gridSize; r++) {
+            for (let c = 0; c < gridSize; c++) {
                 // Verificar si la caja está completa y no ha sido marcada antes
                 if (
                     newHorizontal[r] && newHorizontal[r][c] &&
@@ -201,9 +208,9 @@ const GameBoard = () => {
     const renderBoard = () => {
         const board = [];
 
-        for (let r = 0; r < GRID_SIZE * 2 + 1; r++) {
+        for (let r = 0; r < gridSize * 2 + 1; r++) {
             const row = [];
-            for (let c = 0; c < GRID_SIZE * 2 + 1; c++) {
+            for (let c = 0; c < gridSize * 2 + 1; c++) {
                 if (r % 2 === 0 && c % 2 === 0) {
                     // Puntos (dots)
                     row.push(<div key={`${r}-${c}`} className="dot" />);
@@ -249,7 +256,9 @@ const GameBoard = () => {
                             key={`${r}-${c}`}
                             className="box"
                             style={{
-                                backgroundColor: boxOwner ? (boxOwner === playerName ? "#e6f3ff" : "#ffe6e6") : "transparent",
+                                backgroundColor: boxOwner ?
+                                    (boxOwner === playerName ? "#cee7a7" : "#e7cca7") :
+                                    "transparent",
                                 border: "1px solid #ddd"
                             }}
                         >
@@ -270,43 +279,82 @@ const GameBoard = () => {
 
     if (!players || players.length < 2) {
         return (
-            <div>
-                <h2>Esperando a que otro jugador se una...</h2>
-                <p>Jugadores conectados: {players.length}/2</p>
-                <p>Tu nombre: {playerName}</p>
-                <p>Código de sala: {roomCode}</p>
+            <div className="game-container waiting">
+                <div className="waiting-card">
+                    <h2>Esperando jugadores...</h2>
+                    <p>Jugadores conectados: {players.length}/2</p>
+                    <p>Tu nombre: <strong>{playerName}</strong></p>
+                    <p>Código de sala: <strong>{roomCode}</strong></p>
+                    <p>Tamaño del tablero: <strong>{gridSize}x{gridSize}</strong></p>
+                </div>
             </div>
         );
     }
 
-    const totalBoxes = GRID_SIZE * GRID_SIZE;
+    const totalBoxes = gridSize * gridSize;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
     const currentPlayerName = players[turnIndex]?.name;
 
+    // Determinar el ganador
+    let winner = null;
+    if (gameFinished) {
+        const playerScores = players.map(p => ({ name: p.name, score: scores[p.name] || 0 }));
+        playerScores.sort((a, b) => b.score - a.score);
+
+        if (playerScores[0].score > playerScores[1].score) {
+            winner = playerScores[0].name;
+        } else {
+            winner = "Empate";
+        }
+    }
+
     return (
         <div className="game-container">
-            <h2>Dots and Boxes</h2>
-            <div className="game-info">
-                <p><strong>Sala:</strong> {roomCode}</p>
-                <p><strong>Turno de:</strong> {currentPlayerName === playerName ? "Tú" : currentPlayerName}</p>
-                {gameFinished && <p><strong>¡Juego terminado!</strong></p>}
-            </div>
-            <div className="scores">
-                {players.map((p) => (
-                    <div key={p.name} style={{
-                        fontWeight: p.name === playerName ? 'bold' : 'normal',
-                        color: p.name === playerName ? '#3b82f6' : 'black'
-                    }}>
-                        {p.name === playerName ? `${p.name} (tú)` : p.name}: {scores[p.name] || 0} puntos
+            <div className="game-header">
+                <div className="players-info">
+                    <div className={`player-card ${playerName === currentPlayerName ? 'current-turn' : ''}`}>
+                        <h3>{playerName} (Tú)</h3>
+                        <p>Puntos: {scores[playerName] || 0}</p>
                     </div>
-                ))}
+                    <div className="vs">VS</div>
+                    <div className={`player-card ${opponentName === currentPlayerName ? 'current-turn' : ''}`}>
+                        <h3>{opponentName}</h3>
+                        <p>Puntos: {scores[opponentName] || 0}</p>
+                    </div>
+                </div>
+
+                <div className="game-info">
+                    <p>Sala: <strong>{roomCode}</strong></p>
+                    <p>Tablero: <strong>{gridSize}x{gridSize}</strong></p>
+                    {!gameFinished && (
+                        <p className="turn-indicator">
+                            {isMyTurn ? "¡Es tu turno!" : `Turno de ${currentPlayerName}`}
+                        </p>
+                    )}
+                </div>
             </div>
-            <div className="game-board">{renderBoard()}</div>
-            <div className="debug-info" style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+
+            {gameFinished && (
+                <div className="game-result">
+                    {winner === "Empate" ? (
+                        <h2>¡Empate!</h2>
+                    ) : winner === playerName ? (
+                        <h2>¡Ganaste!</h2>
+                    ) : (
+                        <h2>¡Perdiste!</h2>
+                    )}
+                    <p>Puntuación final: {scores[playerName] || 0} - {scores[opponentName] || 0}</p>
+                </div>
+            )}
+
+            <div className="game-board">
+                {renderBoard()}
+            </div>
+
+            <div className="game-stats">
                 <p>Cajas completadas: {completedBoxes}/{totalBoxes}</p>
-                <p>Turno actual: {turnIndex} ({players[turnIndex]?.name})</p>
-                <p>¿Es mi turno?: {isMyTurn ? 'Sí' : 'No'}</p>
+                <p>Progreso: {Math.round((completedBoxes / totalBoxes) * 100)}%</p>
             </div>
         </div>
     );
