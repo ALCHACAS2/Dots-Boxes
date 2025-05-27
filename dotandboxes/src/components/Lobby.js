@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
+<<<<<<< HEAD
 import { saveGameState, getSavedGameState, clearSavedGameState, isGameDataMatch } from "../utils/cookieUtils";
 import "./Lobby.css";
 
@@ -253,6 +254,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import "./Lobby.css";
+=======
+>>>>>>> parent of 2bf9d97 (update)
 
 function Lobby() {
   const [playerName, setPlayerName] = useState("");
