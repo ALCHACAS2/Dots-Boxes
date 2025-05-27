@@ -1,0 +1,241 @@
+/* src/components/Lobby.css */
+:root {
+  --my-turn-color: #cee7a7;
+  --opponent-color: #e7cca7;
+  --primary-dark: #8bc34a;
+  --secondary-dark: #d4a574;
+  --background-light: #f8f9fa;
+  --text-dark: #2c3e50;
+  --border-color: #e0e0e0;
+  --warning-color: #ff9800;
+  --info-color: #2196f3;
+}
+
+.lobby-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--my-turn-color) 0%, var(--opponent-color) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.lobby-card {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  border: 3px solid var(--border-color);
+}
+
+.lobby-title {
+  text-align: center;
+  color: var(--text-dark);
+  margin-bottom: 30px;
+  font-size: 2.2em;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Estilos para mensajes de reconexión y datos guardados */
+.reconnecting-message {
+  background: linear-gradient(135deg, var(--info-color), #1976d2);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+  animation: pulse 2s infinite;
+}
+
+.saved-game-notice {
+  background: linear-gradient(135deg, var(--warning-color), #f57c00);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.saved-game-notice p {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+}
+
+.clear-saved-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid white;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.clear-saved-button:hover {
+  background: white;
+  color: var(--warning-color);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.input-field, .select-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: var(--background-light);
+  box-sizing: border-box;
+}
+
+.input-field:focus, .select-field:focus {
+  outline: none;
+  border-color: var(--primary-dark);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.1);
+}
+
+.input-field:disabled, .select-field:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.grid-size-info {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--secondary-dark);
+  font-style: italic;
+}
+
+.join-button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.join-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
+}
+
+.join-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.players-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, var(--my-turn-color), var(--opponent-color));
+  border-radius: 15px;
+  border: 2px solid var(--border-color);
+}
+
+.players-section h3 {
+  margin: 0 0 15px 0;
+  color: var(--text-dark);
+  text-align: center;
+  font-size: 18px;
+}
+
+.players-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-item {
+  background: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.player-name {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.you-badge {
+  background: var(--primary-dark);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.waiting-message {
+  text-align: center;
+  color: var(--text-dark);
+  font-style: italic;
+  margin-top: 15px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .lobby-container {
+    padding: 10px;
+  }
+  
+  .lobby-card {
+    padding: 30px 20px;
+  }
+  
+  .lobby-title {
+    font-size: 1.8em;
+  }
+  
+  .reconnecting-message,
+  .saved-game-notice {
+    padding: 12px;
+    font-size: 14px;
+  }
+  
+  .clear-saved-button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
