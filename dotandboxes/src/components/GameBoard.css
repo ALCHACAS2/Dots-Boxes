@@ -1,0 +1,45 @@
+.game-board {
+  display: inline-block;
+  margin-top: 20px;
+}
+
+.board-row {
+  display: flex;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  background-color: #000;
+  border-radius: 50%;
+  margin: 4px;
+}
+
+.h-line, .v-line {
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.h-line {
+  width: 40px;
+  height: 6px;
+  margin: 4px 0;
+}
+
+.v-line {
+  width: 6px;
+  height: 40px;
+  margin: 0 4px;
+}
+
+.h-line.taken, .v-line.taken {
+  background-color: #000;
+}
+
+.box {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-weight: bold;
+}
