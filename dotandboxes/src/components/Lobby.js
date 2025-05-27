@@ -309,82 +309,30 @@ function Lobby() {
   };
 
   return (
-    <div className="lobby-container">
-      <div className="lobby-card">
-        <h2 className="lobby-title">Dots and Boxes</h2>
-        <div className="form-group">
-          <label htmlFor="playerName">Nombre del jugador:</label>
-          <input
-            id="playerName"
-            type="text"
-            placeholder="Ingresa tu nombre"
-            value={playerName}
-            onChange={(e) => setPlayerName(e.target.value)}
-            className="input-field"
-          />
+    <div>
+      <h2>Lobby</h2>
+      <input
+        type="text"
+        placeholder="Nombre"
+        value={playerName}
+        onChange={(e) => setPlayerName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Código de sala"
+        value={roomCode}
+        onChange={(e) => setRoomCode(e.target.value)}
+      />
+      <button onClick={handleJoin}>Unirse</button>
+      
+      {players.length > 0 && (
+        <div>
+          <h3>Jugadores en la sala:</h3>
+          {players.map((player, index) => (
+            <div key={index}>{player.name}</div>
+          ))}
         </div>
-
-        <div className="form-group">
-          <label htmlFor="roomCode">Código de sala:</label>
-          <input
-            id="roomCode"
-            type="text"
-            placeholder="Código de la sala"
-            value={roomCode}
-            onChange={(e) => setRoomCode(e.target.value)}
-            className="input-field"
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="gridSize">Tamaño del tablero:</label>
-          <select
-            id="gridSize"
-            value={gridSize}
-            onChange={(e) => setGridSize(Number(e.target.value))}
-            className="select-field"
-            disabled={players.length > 0} // Deshabilitar si ya hay jugadores en la sala
-          >
-            <option value={3}>3x3 (9 cajas)</option>
-            <option value={4}>4x4 (16 cajas)</option>
-            <option value={5}>5x5 (25 cajas)</option>
-            <option value={6}>6x6 (36 cajas)</option>
-            <option value={7}>7x7 (49 cajas)</option>
-            <option value={8}>8x8 (64 cajas)</option>
-            <option value={10}>10x10 (100 cajas)</option>
-          </select>
-          {players.length > 0 && roomGridSize && (
-            <p className="grid-size-info">
-              Tamaño establecido: {roomGridSize}x{roomGridSize}
-            </p>
-          )}
-        </div>
-
-        <button
-          onClick={handleJoin}
-          className="join-button"
-          disabled={!playerName || !roomCode}
-        >
-          Unirse a la sala
-        </button>
-
-        {players.length > 0 && (
-          <div className="players-section">
-            <h3>Jugadores en la sala ({players.length}/2):</h3>
-            <div className="players-list">
-              {players.map((player, index) => (
-                <div key={index} className="player-item">
-                  <span className="player-name">{player.name}</span>
-                  {player.name === playerName && <span className="you-badge">(tú)</span>}
-                </div>
-              ))}
-            </div>
-            {players.length === 1 && (
-              <p className="waiting-message">Esperando al segundo jugador...</p>
-            )}
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 }
