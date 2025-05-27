@@ -62,7 +62,7 @@ function Lobby() {
         onChange={(e) => setRoomCode(e.target.value)}
       />
       <button onClick={handleJoin}>Unirse</button>
-      
+
       {players.length > 0 && (
         <div>
           <h3>Jugadores en la sala:</h3>

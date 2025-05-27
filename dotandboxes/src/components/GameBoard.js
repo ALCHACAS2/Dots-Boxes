@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import "./GameBoard.css";
 
-const GRID_SIZE = 3; // Tamaño del tablero (3x3 cajas)
+const GRID_SIZE = 10; // Tamaño del tablero (3x3 cajas)
 
 const GameBoard = () => {
     const location = useLocation();
