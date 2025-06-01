@@ -2,13 +2,26 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
+import { useVoiceChat } from "../hooks/useVoice";
+
 import "./GameBoard.css";
 
 const GameBoard = () => {
     const location = useLocation();
     const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
+    const socket = useSocket(); // ✅ primero obtenés el socket
 
-    const socket = useSocket();
+    const {
+        micEnabled,
+        audioEnabled,
+        toggleMic,
+        toggleAudio
+    } = useVoiceChat({
+        socket,
+        roomCode,
+        isInitiator: players[0]?.name === playerName
+    });
+
 
     console.log("Location state:", location.state);
     console.log("Players:", players);
@@ -326,6 +339,15 @@ const GameBoard = () => {
                     </div>
                 ))}
             </div>
+            <div style={{ marginBottom: "10px" }}>
+                <button onClick={toggleMic}>
+                    {micEnabled ? "🔇 Apagar Micrófono" : "🎙️ Encender Micrófono"}
+                </button>
+                <button onClick={toggleAudio} style={{ marginLeft: "10px" }}>
+                    {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
+                </button>
+            </div>
+
             <div className="game-board">{renderBoard()}</div>
             <div className="debug-info" style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
                 <p>Tamaño del tablero: {GRID_SIZE}x{GRID_SIZE}</p>
