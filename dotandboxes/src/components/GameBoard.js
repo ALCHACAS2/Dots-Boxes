@@ -4,31 +4,34 @@ import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import "./GameBoard.css";
 
-const GRID_SIZE = 10; // Tamaño del tablero (3x3 cajas)
-
 const GameBoard = () => {
     const location = useLocation();
-    const { playerName, roomCode, players = [] } = location.state || {};
+    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
 
     const socket = useSocket();
 
     console.log("Location state:", location.state);
     console.log("Players:", players);
-    console.log("Players length:", players?.length);
+    console.log("Grid Size:", initialGridSize);
 
-    const [horizontalLines, setHorizontalLines] = useState(
-        Array(GRID_SIZE + 1).fill(null).map(() => Array(GRID_SIZE).fill(false))
-    );
-    const [verticalLines, setVerticalLines] = useState(
-        Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE + 1).fill(false))
-    );
-    const [boxes, setBoxes] = useState(
-        Array(GRID_SIZE).fill(null).map(() => Array(GRID_SIZE).fill(null))
-    );
+    const [GRID_SIZE, setGridSize] = useState(initialGridSize);
+    const [horizontalLines, setHorizontalLines] = useState([]);
+    const [verticalLines, setVerticalLines] = useState([]);
+    const [boxes, setBoxes] = useState([]);
 
     const [turnIndex, setTurnIndex] = useState(0);
     const [scores, setScores] = useState({});
     const [opponentName, setOpponentName] = useState("Tu oponente");
+
+    // Inicializar arrays basados en el tamaño de cuadrícula
+    useEffect(() => {
+        const size = initialGridSize || 3;
+        setGridSize(size);
+
+        setHorizontalLines(Array(size + 1).fill(null).map(() => Array(size).fill(false)));
+        setVerticalLines(Array(size).fill(null).map(() => Array(size + 1).fill(false)));
+        setBoxes(Array(size).fill(null).map(() => Array(size).fill(null)));
+    }, [initialGridSize]);
 
     useEffect(() => {
         if (players.length === 2) {
@@ -60,6 +63,9 @@ const GameBoard = () => {
         socket.on("game_state", (newGameState) => {
             console.log("Estado del juego recibido:", newGameState);
             if (newGameState) {
+                if (newGameState.gridSize && newGameState.gridSize !== GRID_SIZE) {
+                    setGridSize(newGameState.gridSize);
+                }
                 setTurnIndex(newGameState.turnIndex || 0);
                 if (newGameState.scores) setScores(newGameState.scores);
                 if (newGameState.horizontalLines) setHorizontalLines(newGameState.horizontalLines);
@@ -72,7 +78,7 @@ const GameBoard = () => {
             socket.off("opponent_move");
             socket.off("game_state");
         };
-    }, [socket]);
+    }, [socket, GRID_SIZE]);
 
     const checkBoxCompletion = (newHorizontal, newVertical, newBoxes) => {
         let boxesCompleted = 0;
@@ -271,11 +277,12 @@ const GameBoard = () => {
 
     if (!players || players.length < 2) {
         return (
-            <div>
+            <div className="game-container">
                 <h2>Esperando a que otro jugador se una...</h2>
                 <p>Jugadores conectados: {players.length}/2</p>
                 <p>Tu nombre: {playerName}</p>
                 <p>Código de sala: {roomCode}</p>
+                <p>Tamaño del tablero: {GRID_SIZE}x{GRID_SIZE}</p>
             </div>
         );
     }
@@ -287,7 +294,7 @@ const GameBoard = () => {
 
     return (
         <div className="game-container">
-            <h2>Dots and Boxes</h2>
+            <h2>Dots and Boxes ({GRID_SIZE}x{GRID_SIZE})</h2>
             <div className="game-info">
                 <p><strong>Sala:</strong> {roomCode}</p>
                 <p><strong>Turno de:</strong> {currentPlayerName === playerName ? "Tú" : currentPlayerName}</p>
@@ -305,6 +312,7 @@ const GameBoard = () => {
             </div>
             <div className="game-board">{renderBoard()}</div>
             <div className="debug-info" style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
+                <p>Tamaño del tablero: {GRID_SIZE}x{GRID_SIZE}</p>
                 <p>Cajas completadas: {completedBoxes}/{totalBoxes}</p>
                 <p>Turno actual: {turnIndex} ({players[turnIndex]?.name})</p>
                 <p>¿Es mi turno?: {isMyTurn ? 'Sí' : 'No'}</p>
