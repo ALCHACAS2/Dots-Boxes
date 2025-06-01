@@ -2,7 +2,6 @@
 import React, { createContext, useContext } from "react";
 import { io } from "socket.io-client";
 
-// Corregido: REACT_APP_SERVER_URL (se había omitido la L final)
 const URL = process.env.REACT_APP_SERVER_UR || "http://localhost:3001";
 
 const socket = io(URL, {
