@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
-
 function Lobby() {
   const [playerName, setPlayerName] = useState("");
   const [roomCode, setRoomCode] = useState("");
