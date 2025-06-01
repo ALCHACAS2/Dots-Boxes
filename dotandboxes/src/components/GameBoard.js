@@ -23,6 +23,18 @@ const GameBoard = () => {
     const [scores, setScores] = useState({});
     const [opponentName, setOpponentName] = useState("Tu oponente");
 
+    // Funciones helper para manejo de jugadores
+    const getPlayerNumber = (playerName) => {
+        if (!players || players.length < 2) return null;
+        const playerIndex = players.findIndex(p => p.name === playerName);
+        return playerIndex + 1; // Convertir índice a número de jugador (1 o 2)
+    };
+
+    const getCurrentPlayerNumber = () => {
+        const currentPlayerName = players[turnIndex]?.name;
+        return getPlayerNumber(currentPlayerName);
+    };
+
     // Inicializar arrays basados en el tamaño de cuadrícula
     useEffect(() => {
         const size = initialGridSize || 3;
@@ -254,7 +266,7 @@ const GameBoard = () => {
                     row.push(
                         <div
                             key={`${r}-${c}`}
-                            className="box"
+                            className={`box ${boxOwner ? `player${getPlayerNumber(boxOwner)}` : ''}`}
                             style={{
                                 backgroundColor: boxOwner ? (boxOwner === playerName ? "#e6f3ff" : "#ffe6e6") : "transparent",
                                 border: "1px solid #ddd"
@@ -295,9 +307,13 @@ const GameBoard = () => {
     return (
         <div className="game-container">
             <h2>Dots and Boxes ({GRID_SIZE}x{GRID_SIZE})</h2>
-            <div className="game-info">
+            <div className="game-info ">
                 <p><strong>Sala:</strong> {roomCode}</p>
-                <p><strong>Turno de:</strong> {currentPlayerName === playerName ? "Tú" : currentPlayerName}</p>
+
+                <div className={`turn-indicator player${getCurrentPlayerNumber()}`}>
+                    Turno de {currentPlayerName === playerName ? "Tú" : currentPlayerName}
+                </div>
+
                 {gameFinished && <p><strong>¡Juego terminado!</strong></p>}
             </div>
             <div className="scores">

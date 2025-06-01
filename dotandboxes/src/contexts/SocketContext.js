@@ -2,7 +2,7 @@
 import React, { createContext, useContext } from "react";
 import { io } from "socket.io-client";
 
-const URL = process.env.REACT_APP_SERVER_UR || "http://localhost:3001";
+const URL = process.env.REACT_APP_SERVER_URL || "http://localhost:3001";
 
 const socket = io(URL, {
   transports: ["websocket"],
