@@ -7,6 +7,7 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
     const peerConnectionRef = useRef(null);
     const localStreamRef = useRef(null);
     const remoteAudioRef = useRef(new Audio());
+    const localAudioTrackRef = useRef(null);
 
     useEffect(() => {
         const peer = new RTCPeerConnection();
@@ -28,26 +29,13 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
         peerConnectionRef.current = peer;
 
         if (isInitiator) {
-            navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-                localStreamRef.current = stream;
-                stream.getTracks().forEach((track) => peer.addTrack(track, stream));
-
-                peer.createOffer().then((offer) => {
-                    peer.setLocalDescription(offer);
-                    socket.emit("signal", {
-                        roomCode,
-                        data: { offer }
-                    });
-                });
-            });
+            startMicrophone(); // Solo el iniciador arranca con el micrófono si quiere
         }
 
         socket.on("signal", async ({ data }) => {
             if (data.offer) {
                 await peer.setRemoteDescription(new RTCSessionDescription(data.offer));
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                localStreamRef.current = stream;
-                stream.getTracks().forEach((track) => peer.addTrack(track, stream));
+                await startMicrophone();
                 const answer = await peer.createAnswer();
                 await peer.setLocalDescription(answer);
                 socket.emit("signal", { roomCode, data: { answer } });
@@ -68,20 +56,38 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
         };
     }, [socket, roomCode, isInitiator]);
 
+    // Activar micro
+    const startMicrophone = async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        localStreamRef.current = stream;
+        const track = stream.getAudioTracks()[0];
+        localAudioTrackRef.current = track;
+
+        peerConnectionRef.current.addTrack(track, stream);
+        setMicEnabled(true);
+    };
+
+    // Activar / desactivar mic
     const toggleMic = async () => {
         if (!micEnabled) {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            localStreamRef.current = stream;
-            stream.getTracks().forEach((track) => {
-                peerConnectionRef.current?.addTrack(track, stream);
-            });
-            setMicEnabled(true);
+            await startMicrophone();
         } else {
-            localStreamRef.current?.getTracks().forEach((track) => track.stop());
+            if (localAudioTrackRef.current) {
+                localAudioTrackRef.current.enabled = false;
+                peerConnectionRef.current.getSenders().forEach(sender => {
+                    if (sender.track === localAudioTrackRef.current) {
+                        peerConnectionRef.current.removeTrack(sender);
+                    }
+                });
+                localAudioTrackRef.current.stop();
+                localAudioTrackRef.current = null;
+            }
+
             setMicEnabled(false);
         }
     };
 
+    // Activar / desactivar audio recibido
     const toggleAudio = () => {
         remoteAudioRef.current.muted = !remoteAudioRef.current.muted;
         setAudioEnabled(!remoteAudioRef.current.muted);
