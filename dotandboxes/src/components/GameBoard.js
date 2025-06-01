@@ -9,6 +9,7 @@ const GRID_SIZE = 10; // Tamaño del tablero (3x3 cajas)
 const GameBoard = () => {
     const location = useLocation();
     const { playerName, roomCode, players = [] } = location.state || {};
+
     const socket = useSocket();
 
     console.log("Location state:", location.state);

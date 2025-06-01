@@ -1,4 +1,3 @@
-// src/components/Lobby.js
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
@@ -12,19 +11,18 @@ function Lobby() {
   const socket = useSocket();
 
   useEffect(() => {
-    // Escuchar cuando se actualiza la lista de jugadores
     socket.on("playersUpdate", (updatedPlayers) => {
       console.log("Jugadores actualizados:", updatedPlayers);
       setPlayers(updatedPlayers);
     });
 
-    socket.on("startGame", (playersArray) => {
-      console.log("Recibido startGame", playersArray);
+    socket.on("startGame", (data) => {
+      console.log("Recibido startGame:", data);
       navigate("/game", {
         state: {
           playerName,
           roomCode,
-          players: playersArray, // El servidor envía directamente el array de jugadores
+          players: data.players, // ← ¡Cambio aquí!
         },
       });
     });
@@ -38,7 +36,7 @@ function Lobby() {
       socket.off("roomFull");
       socket.off("playersUpdate");
     };
-  }, [navigate, playerName, roomCode, players]);
+  }, [socket, navigate, playerName, roomCode]);
 
   const handleJoin = () => {
     if (!playerName || !roomCode) return;
