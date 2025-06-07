@@ -4,14 +4,18 @@
   --opponent-color: #e7cca7;
   --primary-dark: #8bc34a;
   --secondary-dark: #d4a574;
+  --tic-tac-toe-primary: #3498db;
+  --tic-tac-toe-secondary: #e74c3c;
   --background-light: #f8f9fa;
   --text-dark: #2c3e50;
   --border-color: #e0e0e0;
+  --success-color: #27ae60;
+  --warning-color: #f39c12;
 }
 
 .lobby-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, var(--my-turn-color) 0%, var(--opponent-color) 100%);
+  background: linear-gradient(135deg, var(--my-turn-color) 0%, var(--opponent-color) 50%, #c8e6ff 100%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,10 +27,11 @@
   background: white;
   border-radius: 20px;
   padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
   width: 100%;
   border: 3px solid var(--border-color);
+  backdrop-filter: blur(10px);
 }
 
 .lobby-title {
@@ -35,10 +40,11 @@
   margin-bottom: 30px;
   font-size: 2.2em;
   font-weight: bold;
-  background: linear-gradient(45deg, var(--primary-dark), var(--secondary-dark));
+  background: linear-gradient(45deg, var(--primary-dark), var(--tic-tac-toe-primary), var(--secondary-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .form-group {
@@ -80,12 +86,13 @@
 .grid-size-info {
   margin-top: 8px;
   font-size: 12px;
-  color: var(--secondary-dark);
+  color: var(--text-dark);
   font-style: italic;
-  padding: 8px;
-  background-color: #f8f9fa;
-  border-radius: 6px;
-  border-left: 3px solid var(--primary-dark);
+  padding: 12px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-dark);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .join-button {
@@ -101,11 +108,12 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(139, 195, 74, 0.3);
 }
 
 .join-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
+  box-shadow: 0 6px 20px rgba(139, 195, 74, 0.4);
 }
 
 .join-button:disabled {
@@ -121,6 +129,7 @@
   background: linear-gradient(135deg, var(--my-turn-color), var(--opponent-color));
   border-radius: 15px;
   border: 2px solid var(--border-color);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .players-section h3 {
@@ -129,6 +138,7 @@
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .players-list {
@@ -147,12 +157,21 @@
   align-items: center;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.player-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .player-name {
   font-weight: 600;
   color: var(--text-dark);
   font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .you-badge {
@@ -163,24 +182,28 @@
   font-size: 12px;
   font-weight: bold;
   text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(139, 195, 74, 0.3);
 }
 
 .game-info {
   background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  padding: 18px;
+  border-radius: 12px;
+  margin-bottom: 20px;
   border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .game-info p {
-  margin: 8px 0;
+  margin: 10px 0;
   color: var(--text-dark);
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .game-info strong {
   color: var(--primary-dark);
+  font-weight: 700;
 }
 
 .waiting-message {
@@ -188,23 +211,55 @@
   color: var(--text-dark);
   font-style: italic;
   margin: 20px 0;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 10px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
   font-size: 16px;
   animation: pulse 2s infinite;
+  border: 2px dashed var(--primary-dark);
+  font-weight: 500;
 }
 
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
+    border-color: var(--primary-dark);
   }
 
   50% {
     opacity: 0.8;
     transform: scale(1.02);
+    border-color: var(--secondary-dark);
   }
+}
+
+/* Estilos específicos para diferentes tipos de juego */
+.dots-boxes-theme {
+  border-left-color: var(--primary-dark);
+}
+
+.tic-tac-toe-theme {
+  border-left-color: var(--tic-tac-toe-primary);
+}
+
+.dots-boxes-theme .grid-size-info {
+  border-left-color: var(--primary-dark);
+}
+
+.tic-tac-toe-theme .grid-size-info {
+  border-left-color: var(--tic-tac-toe-primary);
+}
+
+/* Efectos hover mejorados */
+.select-field:hover:not(:disabled) {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.05);
+}
+
+.input-field:hover {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.05);
 }
 
 /* Responsive design */
@@ -215,6 +270,7 @@
 
   .lobby-card {
     padding: 30px 20px;
+    max-width: 100%;
   }
 
   .lobby-title {
@@ -223,10 +279,57 @@
 
   .input-field, .select-field {
     font-size: 14px;
+    padding: 10px 12px;
   }
 
   .join-button {
     font-size: 14px;
     padding: 12px;
   }
+
+  .players-section {
+    padding: 20px 15px;
+  }
+
+  .game-info {
+    padding: 15px;
+  }
+
+  .game-info p {
+    font-size: 13px;
+  }
+}
+
+/* Animaciones adicionales */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group {
+  animation: slideIn 0.3s ease forwards;
+}
+
+.players-section {
+  animation: slideIn 0.5s ease forwards;
+}
+
+/* Mejoras visuales para el selector de juegos */
+.select-field option {
+  padding: 10px;
+  font-size: 14px;
+}
+
+.select-field[value="dots-boxes"] {
+  border-left: 4px solid var(--primary-dark);
+}
+
+.select-field[value="tic-tac-toe"] {
+  border-left: 4px solid var(--tic-tac-toe-primary);
 }
