@@ -69,7 +69,8 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
     }, [socket, roomCode, isInitiator]);
 
     const toggleMic = async () => {
-        if (!micEnabled) {
+        if (!localStreamRef.current) {
+            // Si no hay stream, pedirlo y agregarlo
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             localStreamRef.current = stream;
             stream.getTracks().forEach((track) => {
@@ -77,8 +78,12 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
             });
             setMicEnabled(true);
         } else {
-            localStreamRef.current?.getTracks().forEach((track) => track.stop());
-            setMicEnabled(false);
+            // Alternar el estado enabled de la pista de audio
+            const audioTrack = localStreamRef.current.getAudioTracks()[0];
+            if (audioTrack) {
+                audioTrack.enabled = !audioTrack.enabled;
+                setMicEnabled(audioTrack.enabled);
+            }
         }
     };
 
