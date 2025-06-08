@@ -225,7 +225,8 @@ function Lobby() {
               />
             </div>
 
-            {(roomGameType === null ? gameType : roomGameType) === 'dots-boxes' && (
+            {/* Selector de tamaño para ambos juegos */}
+            {((roomGameType === null ? gameType : roomGameType) === 'dots-boxes' || (roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe') && (
               <div className="form-group">
                 <label htmlFor="gridSize">Tamaño del tablero:</label>
                 <select
@@ -275,11 +276,12 @@ function Lobby() {
               </div>
             )}
 
+            {/* Descripción solo para Tic Tac Toe */}
             {(roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe' && (
               <div className="form-group">
                 <div className="game-description">
                   <p>🎯 <strong>3 en Línea (Tic-Tac-Toe)</strong></p>
-                  <p>Tablero fijo de 3x3. ¡Consigue 3 en línea para ganar!</p>
+                  <p>¡Consigue una línea para ganar! Puedes elegir el tamaño del tablero.</p>
                 </div>
               </div>
             )}
