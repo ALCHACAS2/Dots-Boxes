@@ -262,6 +262,38 @@
   box-shadow: 0 0 0 3px rgba(139, 195, 74, 0.05);
 }
 
+/* Nuevos estilos para el grid de juegos */
+.game-grid-3x3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 32px 0;
+}
+.game-grid-cell {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin: 8px;
+  padding: 24px;
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+  min-width: 100px;
+  min-height: 100px;
+  box-shadow: 0 2px 8px #0001;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.game-grid-cell.selectable:hover {
+  background: #e0e7ff;
+  box-shadow: 0 4px 16px #3b82f633;
+}
+.game-grid-cell.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 /* Responsive design */
 @media (max-width: 480px) {
   .lobby-container {
@@ -297,6 +329,43 @@
 
   .game-info p {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 900px) {
+  .game-grid-3x3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  .lobby-card {
+    padding: 10px !important;
+    min-width: 0 !important;
+    width: 98vw !important;
+    max-width: 100vw !important;
+  }
+  .game-grid-3x3 {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .game-grid-cell {
+    min-width: 0 !important;
+    min-height: 70px !important;
+    font-size: 1.1rem !important;
+    padding: 12px !important;
+  }
+  .lobby-title {
+    font-size: 1.3rem !important;
+  }
+  .form-group label, .form-group input, .form-group select {
+    font-size: 1rem !important;
+  }
+  .join-button {
+    font-size: 1rem !important;
+    padding: 8px 12px !important;
+  }
+  .players-list {
+    gap: 4px;
   }
 }
 
