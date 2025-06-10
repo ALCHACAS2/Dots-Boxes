@@ -360,69 +360,18 @@
   display: none;
 }
 
-/* Botón de forzar habilitación mejorado */
-.force-enable-btn {
-  font-size: 0.7rem !important;
-  padding: 6px 12px !important;
-  margin: 8px 4px !important;
-  background: linear-gradient(45deg, #ff6b6b, #ee5a52) !important;
-  color: white !important;
-  border: none !important;
-  border-radius: 8px !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3) !important;
+/* Reconnect button specific styling */
+.voice-btn.reconnect-btn {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  border-color: #ff9800;
+  color: white;
+  animation: pulse-orange 2s infinite;
 }
 
-.force-enable-btn:hover {
-  background: linear-gradient(45deg, #ee5a52, #ff6b6b) !important;
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4) !important;
-}
-
-/* Clases específicas para botones de micrófono y audio */
-.mic-btn:not(.active) {
-  background: rgba(255, 152, 0, 0.2) !important;
-  border-color: rgba(255, 152, 0, 0.4) !important;
-  color: #ffcc80 !important;
-}
-
-.mic-btn:not(.active):hover:not(:disabled) {
-  background: rgba(255, 152, 0, 0.3) !important;
-  border-color: rgba(255, 152, 0, 0.6) !important;
-  color: white !important;
-}
-
-.audio-btn:not(.active) {
-  background: rgba(158, 158, 158, 0.2) !important;
-  border-color: rgba(158, 158, 158, 0.4) !important;
-  color: #bdbdbd !important;
-}
-
-.audio-btn:not(.active):hover:not(:disabled) {
-  background: rgba(158, 158, 158, 0.3) !important;
-  border-color: rgba(158, 158, 158, 0.6) !important;
-  color: white !important;
-}
-
-/* Mensaje informativo del micrófono */
-.mic-info {
-  text-align: center;
-  margin-top: 10px;
-  padding: 8px 12px;
-  background: rgba(33, 150, 243, 0.1);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(33, 150, 243, 0.3);
-  border-radius: 12px;
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-.mic-info small {
-  color: #64B5F6;
-  font-size: 0.8rem;
-  font-weight: 500;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.voice-btn.reconnect-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f57c00, #e65100);
+  border-color: #f57c00;
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
 }
 
 @keyframes pulse {
@@ -439,6 +388,18 @@
   100% { 
     opacity: 1; 
     transform: translateY(0); 
+  }
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
   }
 }
 

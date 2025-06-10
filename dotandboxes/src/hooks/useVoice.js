@@ -24,17 +24,34 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
         let cleanup = false;
 
         const initializePeerConnection = () => {
-            if (cleanup) return;
+            if (cleanup) return;            peer = new RTCPeerConnection(pcConfig);
+            peerConnectionRef.current = peer;
 
-            peer = new RTCPeerConnection(pcConfig);
-            peerConnectionRef.current = peer;// Monitorear el estado de la conexión
+            // Monitorear el estado de la conexión
             peer.onconnectionstatechange = () => {
                 console.log('Connection state:', peer.connectionState);
                 setConnectionState(peer.connectionState);
                 
                 if (peer.connectionState === 'connected') {
                     setIsConnecting(false);
-                } else if (peer.connectionState === 'failed' || peer.connectionState === 'disconnected') {
+                } else if (peer.connectionState === 'failed') {
+                    console.log('Connection failed, attempting to reconnect...');
+                    setIsConnecting(false);
+                    
+                    // Intentar reconectar después de un fallo
+                    setTimeout(() => {
+                        if (!cleanup) {
+                            console.log('Retrying connection after failure...');
+                            try {
+                                peerConnectionRef.current?.close();
+                                peerConnectionRef.current = null;
+                                setupPeerConnection();
+                            } catch (e) {
+                                console.error('Error during reconnection:', e);
+                            }
+                        }
+                    }, 2000);
+                } else if (peer.connectionState === 'disconnected') {
                     setIsConnecting(false);
                 } else if (peer.connectionState === 'connecting') {
                     setIsConnecting(true);
@@ -335,6 +352,34 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
     };    const forceEnableControls = () => {
         console.log('Forzando habilitación de controles de voz');
         setIsConnecting(false);
+    };    const reconnectVoice = async () => {
+        console.log('🔄 Iniciando reconexión manual de voz...');
+        setIsConnecting(true);
+        setConnectionState('new');
+        
+        try {
+            // Cerrar conexión existente
+            if (peerConnectionRef.current) {
+                peerConnectionRef.current.close();
+                peerConnectionRef.current = null;
+            }
+            
+            // Detener stream local si existe
+            if (localStreamRef.current) {
+                localStreamRef.current.getTracks().forEach(track => track.stop());
+                localStreamRef.current = null;
+            }
+            
+            // Reset estados
+            setMicEnabled(false);
+            
+            console.log('✅ Conexión reiniciada - activa el micrófono para reconectar');
+            setIsConnecting(false);
+            
+        } catch (error) {
+            console.error('❌ Error durante la reconexión:', error);
+            setIsConnecting(false);
+        }
     };
 
     return {
@@ -344,6 +389,7 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
         toggleAudio,
         isConnecting,
         connectionState,
-        forceEnableControls
+        forceEnableControls,
+        reconnectVoice
     };
 };

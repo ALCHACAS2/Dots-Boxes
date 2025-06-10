@@ -227,6 +227,32 @@
   display: none;
 }
 
+/* Reconnect button specific styling */
+.voice-btn.reconnect-btn {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  border-color: #ff9800;
+  color: white;
+  animation: pulse-orange 2s infinite;
+}
+
+.voice-btn.reconnect-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f57c00, #e65100);
+  border-color: #f57c00;
+  box-shadow: 0 6px 16px rgba(255, 152, 0, 0.4);
+}
+
+@keyframes pulse-orange {
+  0% {
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(255, 152, 0, 0.6);
+  }
+  100% {
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+  }
+}
+
 .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -435,6 +461,23 @@
     opacity: 1; 
     transform: translateY(0); 
   }
+}
+
+/* Status indicators in debug info */
+.status-failed {
+  color: #f44336;
+  font-weight: bold;
+}
+
+.status-connected {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.connection-help {
+  color: #ff9800;
+  font-weight: bold;
+  margin-top: 5px;
 }
 
 /* Responsive design */

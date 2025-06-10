@@ -7,9 +7,10 @@ import { useVoiceChat } from "../hooks/useVoice";
 import "./GameBoard.css";
 
 const GameBoard = () => {
-    const location = useLocation();    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
+    const location = useLocation();
+    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
     const socket = useSocket(); // ✅ primero obtenés el socket
-
+    
     const {
         micEnabled,
         audioEnabled,
@@ -17,7 +18,8 @@ const GameBoard = () => {
         toggleAudio,
         isConnecting,
         connectionState,
-        forceEnableControls
+        forceEnableControls,
+        reconnectVoice
     } = useVoiceChat({
         socket,
         roomCode,
@@ -368,9 +370,7 @@ const GameBoard = () => {
                         title={micEnabled ? "Haz clic para silenciar tu micrófono" : "Haz clic para activar tu micrófono y comenzar a hablar"}
                     >
                         {micEnabled ? "🔇 Silenciar Micrófono" : "🎙️ Activar Micrófono"}
-                    </button>
-
-                    <button 
+                    </button>                    <button 
                         onClick={toggleAudio} 
                         className={`voice-btn audio-btn ${audioEnabled ? 'active' : ''}`}
                         disabled={isConnecting}
@@ -378,6 +378,18 @@ const GameBoard = () => {
                     >
                         {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
                     </button>
+
+                    {/* Botón de reconexión cuando falla la conexión */}
+                    {connectionState === 'failed' && (
+                        <button 
+                            onClick={reconnectVoice} 
+                            className="voice-btn reconnect-btn"
+                            disabled={isConnecting}
+                            title="La conexión de voz falló. Haz clic para intentar reconectar"
+                        >
+                            🔄 Reconectar Audio
+                        </button>
+                    )}
                 </div>
                 
                 {/* Mensaje informativo cuando el micrófono está desactivado */}

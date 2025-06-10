@@ -15,7 +15,8 @@ const TicTacToe = () => {
         toggleAudio,
         isConnecting,
         connectionState,
-        forceEnableControls
+        forceEnableControls,
+        reconnectVoice
     } = useVoiceChat({
         socket,
         roomCode,
@@ -226,9 +227,7 @@ const TicTacToe = () => {
                         title={micEnabled ? "Haz clic para silenciar tu micrófono" : "Haz clic para activar tu micrófono y comenzar a hablar"}
                     >
                         {micEnabled ? "🔇 Silenciar Micrófono" : "🎙️ Activar Micrófono"}
-                    </button>
-
-                    <button 
+                    </button>                    <button 
                         onClick={toggleAudio} 
                         className={`voice-btn audio-btn ${audioEnabled ? 'active' : ''}`}
                         disabled={isConnecting}
@@ -236,6 +235,18 @@ const TicTacToe = () => {
                     >
                         {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
                     </button>
+
+                    {/* Botón de reconexión cuando falla la conexión */}
+                    {connectionState === 'failed' && (
+                        <button 
+                            onClick={reconnectVoice} 
+                            className="voice-btn reconnect-btn"
+                            disabled={isConnecting}
+                            title="La conexión de voz falló. Haz clic para intentar reconectar"
+                        >
+                            🔄 Reconectar Audio
+                        </button>
+                    )}
                 </div>
                 
                 {/* Mensaje informativo cuando el micrófono está desactivado */}
@@ -262,9 +273,12 @@ const TicTacToe = () => {
                 <p>¿Es tu turno?: {isMyTurn ? 'Sí' : 'No'}</p>
                 <p>Estado del juego: {gameEnded ? 'Terminado' : 'En progreso'}</p>
                 <p>Audio - Conectando: {isConnecting ? 'Sí' : 'No'}</p>
-                <p>Audio - Estado: {connectionState}</p>
+                <p>Audio - Estado: <span className={connectionState === 'failed' ? 'status-failed' : connectionState === 'connected' ? 'status-connected' : ''}>{connectionState}</span></p>
                 <p>Micrófono: {micEnabled ? 'Encendido' : 'Apagado'}</p>
                 <p>Audio remoto: {audioEnabled ? 'Encendido' : 'Apagado'}</p>
+                {connectionState === 'failed' && (
+                    <p className="connection-help">⚠️ Conexión de audio falló - usa el botón "Reconectar Audio" arriba</p>
+                )}
             </div>
         </div>
     );
