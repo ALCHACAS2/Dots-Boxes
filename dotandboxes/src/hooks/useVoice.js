@@ -274,11 +274,10 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
                 peerConnectionRef.current.close();
                 peerConnectionRef.current = null;
             }
-            
-            setIsConnecting(false);
+              setIsConnecting(false);
             setMicEnabled(false);
         };
-    }, [socket, roomCode, isInitiator]);    const toggleMic = async () => {
+    }, [socket, roomCode, isInitiator, pcConfig]);const toggleMic = async () => {
         try {
             if (!localStreamRef.current) {
                 // Primera activación: solicitar acceso al micrófono

@@ -32,11 +32,8 @@ const GameBoard = () => {
     const [GRID_SIZE, setGridSize] = useState(initialGridSize);
     const [horizontalLines, setHorizontalLines] = useState([]);
     const [verticalLines, setVerticalLines] = useState([]);
-    const [boxes, setBoxes] = useState([]);
-
-    const [turnIndex, setTurnIndex] = useState(0);
+    const [boxes, setBoxes] = useState([]);    const [turnIndex, setTurnIndex] = useState(0);
     const [scores, setScores] = useState({});
-    const [opponentName, setOpponentName] = useState("Tu oponente");
 
     // Funciones helper para manejo de jugadores
     const getPlayerNumber = (playerName) => {

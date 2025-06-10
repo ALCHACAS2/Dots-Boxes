@@ -22,12 +22,10 @@ const TicTacToe = () => {
         isInitiator: players[0]?.name === playerName
     });
 
-    const [board, setBoard] = useState(Array(9).fill(null));
-    const [turnIndex, setTurnIndex] = useState(0);
+    const [board, setBoard] = useState(Array(9).fill(null));    const [turnIndex, setTurnIndex] = useState(0);
     const [gameEnded, setGameEnded] = useState(false);
     const [winner, setWinner] = useState(null);
     const [isDraw, setIsDraw] = useState(false);
-    const [opponentName, setOpponentName] = useState("Tu oponente");
 
     // Obtener el símbolo del jugador actual ('X' o 'O')
     const getPlayerSymbol = () => {
