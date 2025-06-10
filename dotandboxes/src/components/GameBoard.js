@@ -7,15 +7,17 @@ import { useVoiceChat } from "../hooks/useVoice";
 import "./GameBoard.css";
 
 const GameBoard = () => {
-    const location = useLocation();
-    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
+    const location = useLocation();    const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
     const socket = useSocket(); // ✅ primero obtenés el socket
 
     const {
         micEnabled,
         audioEnabled,
         toggleMic,
-        toggleAudio
+        toggleAudio,
+        isConnecting,
+        connectionState,
+        forceEnableControls
     } = useVoiceChat({
         socket,
         roomCode,
@@ -338,14 +340,60 @@ const GameBoard = () => {
                         {p.name === playerName ? `${p.name} (tú)` : p.name}: {scores[p.name] || 0} puntos
                     </div>
                 ))}
-            </div>
-            <div style={{ marginBottom: "10px" }}>
-                <button onClick={toggleMic}>
-                    {micEnabled ? "🔇 Apagar Micrófono" : "🎙️ Encender Micrófono"}
-                </button>
-                <button onClick={toggleAudio} style={{ marginLeft: "10px" }}>
-                    {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
-                </button>
+            </div>            <div className="voice-controls">
+                <div className="voice-status">
+                    {isConnecting ? (
+                        <span className="connecting">🔄 Conectando audio...</span>
+                    ) : (
+                        <span className={`status ${connectionState}`}>
+                            📡 Audio: {connectionState === 'connected' ? 'Conectado' : 'Desconectado'}
+                        </span>
+                    )}
+                    
+                    {/* Indicador de estado del micrófono */}
+                    <div className="mic-status">
+                        <span className={`mic-indicator ${micEnabled ? 'active' : 'inactive'}`}>
+                            🎙️ Micrófono: {micEnabled ? 'Activo' : 'Desactivado'}
+                        </span>
+                    </div>
+
+                    {/* Botón de emergencia visible solo si los controles están bloqueados */}
+                    {isConnecting && (
+                        <button 
+                            onClick={() => forceEnableControls()}
+                            className="force-enable-btn"
+                            title="Usar solo si los controles se quedan bloqueados"
+                        >
+                            🚨 Forzar habilitación
+                        </button>
+                    )}
+                </div>
+                <div className="voice-buttons">
+                    <button 
+                        onClick={toggleMic} 
+                        className={`voice-btn mic-btn ${micEnabled ? 'active' : ''}`}
+                        disabled={isConnecting}
+                        title={micEnabled ? "Haz clic para silenciar tu micrófono" : "Haz clic para activar tu micrófono y comenzar a hablar"}
+                    >
+                        {micEnabled ? "🔇 Silenciar Micrófono" : "🎙️ Activar Micrófono"}
+                    </button>
+
+                    <button 
+                        onClick={toggleAudio} 
+                        className={`voice-btn audio-btn ${audioEnabled ? 'active' : ''}`}
+                        disabled={isConnecting}
+                        title={audioEnabled ? "Haz clic para silenciar el audio del oponente" : "Haz clic para activar el audio del oponente"}
+                    >
+                        {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
+                    </button>
+                </div>
+                
+                {/* Mensaje informativo cuando el micrófono está desactivado */}
+                {!micEnabled && !isConnecting && (
+                    <div className="mic-info">
+                        <small>💡 Tu micrófono está desactivado por defecto. Haz clic en "Activar Micrófono" para hablar.</small>
+                    </div>
+                )}
             </div>
 
             <div className="game-board">{renderBoard()}</div>
