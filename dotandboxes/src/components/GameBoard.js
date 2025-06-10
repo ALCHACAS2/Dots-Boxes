@@ -311,30 +311,25 @@ const GameBoard = () => {
     const totalBoxes = GRID_SIZE * GRID_SIZE;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
-    const currentPlayerName = players[turnIndex]?.name;
-
-    return (
+    const currentPlayerName = players[turnIndex]?.name;    return (
         <div className="game-container">
-            <h2>Dots and Boxes ({GRID_SIZE}x{GRID_SIZE})</h2>
-            <div className="game-info ">
+            <h1 className="game-title">⚪ Dots & Boxes ⚪</h1>
+            <div className="game-info">
                 <p><strong>Sala:</strong> {roomCode}</p>
+                <p><strong>Tablero:</strong> {GRID_SIZE}x{GRID_SIZE}</p>
 
                 <div className={`turn-indicator player${getCurrentPlayerNumber()}`}>
                     Turno de {currentPlayerName === playerName ? "Tú" : currentPlayerName}
                 </div>
 
                 {gameFinished && <p><strong>¡Juego terminado!</strong></p>}
-            </div>
-            <div className="scores">
-                {players.map((p) => (
-                    <div key={p.name} style={{
-                        fontWeight: p.name === playerName ? 'bold' : 'normal',
-                        color: p.name === playerName ? '#3b82f6' : 'black'
-                    }}>
+            </div>            <div className="scores">
+                {players.map((p, index) => (
+                    <div key={p.name} className={`player${index + 1}`}>
                         {p.name === playerName ? `${p.name} (tú)` : p.name}: {scores[p.name] || 0} puntos
                     </div>
                 ))}
-            </div>            <div className="voice-controls">
+            </div><div className="voice-controls">
                 <div className="voice-status">
                     {isConnecting ? (
                         <span className="connecting">🔄 Conectando audio...</span>

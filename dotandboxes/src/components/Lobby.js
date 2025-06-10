@@ -37,13 +37,11 @@ function Lobby() {
       if (data.players && data.players.length > 0) {
         setIsWaitingForPlayers(true);
       }
-    });
-
-    socket.on("startGame", (data) => {
+    });    socket.on("startGame", (data) => {
       console.log("Recibido startGame:", data);
 
       // Navegar al juego correspondiente según el tipo
-      const gameRoute = data.gameType === 'tic-tac-toe' ? '/tic-tac-toe' : '/game';
+      const gameRoute = data.gameType === 'tic-tac-toe' ? '/tic-tac-toe' : '/dotsandboxes';
 
       navigate(gameRoute, {
         state: {
@@ -84,9 +82,7 @@ function Lobby() {
     }
 
     console.log("Intentando unirse a sala:", { roomCode, playerName, gameType, gridSize });
-    setIsWaitingForPlayers(true);
-
-    const finalGridSize = gameType === 'tic-tac-toe' ? 3 :
+    setIsWaitingForPlayers(true);    const finalGridSize = gameType === 'tic-tac-toe' ? 3 :
       (gridSize === "custom" ? parseInt(customGridSize) : parseInt(gridSize));
 
     socket.emit("joinRoom", {
@@ -223,10 +219,8 @@ function Lobby() {
                 onChange={(e) => setRoomCode(e.target.value)}
                 maxLength={10}
               />
-            </div>
-
-            {/* Selector de tamaño para ambos juegos */}
-            {((roomGameType === null ? gameType : roomGameType) === 'dots-boxes' || (roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe') && (
+            </div>            {/* Selector de tamaño solo para Dots & Boxes */}
+            {(roomGameType === null ? gameType : roomGameType) === 'dots-boxes' && (
               <div className="form-group">
                 <label htmlFor="gridSize">Tamaño del tablero:</label>
                 <select
@@ -274,14 +268,12 @@ function Lobby() {
                   </div>
                 )}
               </div>
-            )}
-
-            {/* Descripción solo para Tic Tac Toe */}
+            )}            {/* Descripción solo para Tic Tac Toe */}
             {(roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe' && (
               <div className="form-group">
                 <div className="game-description">
                   <p>🎯 <strong>3 en Línea (Tic-Tac-Toe)</strong></p>
-                  <p>¡Consigue una línea para ganar! Puedes elegir el tamaño del tablero.</p>
+                  <p>¡Consigue tres en línea para ganar! Tablero clásico 3x3.</p>
                 </div>
               </div>
             )}
