@@ -55,13 +55,8 @@ const GameBoard = () => {
         setHorizontalLines(Array(size + 1).fill(null).map(() => Array(size).fill(false)));
         setVerticalLines(Array(size).fill(null).map(() => Array(size + 1).fill(false)));
         setBoxes(Array(size).fill(null).map(() => Array(size).fill(null)));
-    }, [initialGridSize]);
-
-    useEffect(() => {
+    }, [initialGridSize]);    useEffect(() => {
         if (players.length === 2) {
-            const opponent = players.find(p => p.name !== playerName);
-            if (opponent) setOpponentName(opponent.name);
-
             // Inicializar scores con ambos jugadores
             const initialScores = {};
             players.forEach(player => {

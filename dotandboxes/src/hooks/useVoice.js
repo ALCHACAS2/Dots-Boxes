@@ -7,19 +7,18 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
     const [connectionState, setConnectionState] = useState('new');
 
     const peerConnectionRef = useRef(null);
-    const localStreamRef = useRef(null);
-    const remoteAudioRef = useRef(new Audio());
-
-    // Configuración de servidores STUN/TURN
-    const pcConfig = {
-        iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' }
-        ]
-    };
+    const localStreamRef = useRef(null);    const remoteAudioRef = useRef(new Audio());
 
     useEffect(() => {
         if (!socket || !roomCode) return;
+
+        // Configuración de servidores STUN/TURN
+        const pcConfig = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' }
+            ]
+        };
 
         let peer = null;
         let cleanup = false;
@@ -28,7 +27,7 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
             if (cleanup) return;
 
             peer = new RTCPeerConnection(pcConfig);
-            peerConnectionRef.current = peer;            // Monitorear el estado de la conexión
+            peerConnectionRef.current = peer;// Monitorear el estado de la conexión
             peer.onconnectionstatechange = () => {
                 console.log('Connection state:', peer.connectionState);
                 setConnectionState(peer.connectionState);
@@ -273,11 +272,10 @@ export const useVoiceChat = ({ socket, roomCode, isInitiator }) => {
             if (peerConnectionRef.current) {
                 peerConnectionRef.current.close();
                 peerConnectionRef.current = null;
-            }
-              setIsConnecting(false);
+            }            setIsConnecting(false);
             setMicEnabled(false);
         };
-    }, [socket, roomCode, isInitiator, pcConfig]);const toggleMic = async () => {
+    }, [socket, roomCode, isInitiator]);const toggleMic = async () => {
         try {
             if (!localStreamRef.current) {
                 // Primera activación: solicitar acceso al micrófono

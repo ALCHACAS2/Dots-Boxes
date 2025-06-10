@@ -34,13 +34,8 @@ const TicTacToe = () => {
     };
 
     // Verificar si es el turno del jugador actual
-    const isMyTurn = players.length === 2 && players[turnIndex]?.name === playerName;
-
-    useEffect(() => {
-        if (players.length === 2) {
-            const opponent = players.find(p => p.name !== playerName);
-            if (opponent) setOpponentName(opponent.name);
-        }
+    const isMyTurn = players.length === 2 && players[turnIndex]?.name === playerName;    useEffect(() => {
+        // Solo necesitamos este useEffect para configuraciones iniciales si es necesario
     }, [players, playerName]);
 
     useEffect(() => {
