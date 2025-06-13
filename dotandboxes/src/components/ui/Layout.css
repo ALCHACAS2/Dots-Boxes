@@ -3,87 +3,628 @@
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 1rem;
+  align-items: flex-start;
+  padding: 2rem;
   font-family: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
   position: relative;
   overflow-x: hidden;
 }
 
+.layout-content {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+
 /* Gradient Background Variants */
 .layout--default {
-  background: linear-gradient(135deg, 
-    #667eea 0%, 
-    #764ba2 25%, 
-    #f093fb 50%, 
-    #f5576c 75%, 
-    #4facfe 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
+    background: linear-gradient(135deg,
+            #667eea 0%,
+            #764ba2 25%,
+            #f093fb 50%,
+            #f5576c 75%,
+            #4facfe 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
 }
 
 .layout--gaming {
-  background: linear-gradient(135deg, 
-    #1e3c72 0%, 
-    #2a5298 25%, 
-    #667eea 50%, 
-    #764ba2 75%, 
-    #f093fb 100%);
-  background-size: 400% 400%;
-  animation: gradientShift 12s ease infinite;
+    background: linear-gradient(135deg,
+            #1e3c72 0%,
+            #2a5298 25%,
+            #667eea 50%,
+            #764ba2 75%,
+            #f093fb 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 12s ease infinite;
 }
 
 .layout--minimal {
-  background: linear-gradient(135deg, 
-    #f8fafc 0%, 
-    #e2e8f0 50%, 
-    #cbd5e0 100%);
+    background: linear-gradient(135deg,
+            #f8fafc 0%,
+            #e2e8f0 50%,
+            #cbd5e0 100%);
 }
 
 /* Animated Background Effects */
 .layout-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-    radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .layout--minimal::before {
-  background: none;
+    background: none;
 }
 
 @keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
 }
 
 .layout-content {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-  max-width: 1200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Game Layout Responsive Structure */
+.tic-tac-toe-game,
+.dots-box-game {
+    width: 100%;
+    display: grid;
+    gap: 1rem;
+    /* Mobile-first: Solo turn-indicator y área de juego */
+    grid-template-areas:
+        "turn-indicator"
+        "game-board";
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    min-height: 80vh;
 }
 
 /* Responsive Design */
 @media (min-width: 768px) {
-  .layout-container {
-    padding: 2rem;
-  }
+    .layout-container {
+        padding: 2rem;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        /* Tablet: Layout simplificado */
+        grid-template-areas:
+            "turn-indicator"
+            "game-board";
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    .layout-container {
+        padding: 2rem 4rem;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        /* Desktop: Layout horizontal simplificado */
+        grid-template-areas:
+            "turn-indicator turn-indicator"
+            "game-board game-board";
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        max-width: 1000px;
+        margin: 0 auto;
+        min-height: 70vh;
+    }
 }
 
 @media (min-width: 1200px) {
-  .layout-container {
-    padding: 4rem 2rem;
-  }
+    .layout-container {
+        padding: 4rem 2rem;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        /* Desktop grande: Más espacio para el área de juego */
+        max-width: 1200px;
+        min-height: 75vh;
+    }
+}
+
+/* Grid Area Assignments - Solo los elementos principales */
+.turn-indicator { grid-area: turn-indicator; }
+.game-board { grid-area: game-board; }
+
+/* Botón de Controles - Posición Fija Global */
+.controls-modal-trigger {
+    /* Posicionamiento absoluto en esquina superior derecha */
+    position: fixed !important;
+    top: 1rem !important;
+    right: 1rem !important;
+    z-index: 99999 !important; /* Z-index máximo para estar siempre visible */
+    
+    /* Estilos base */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    
+    /* Asegurar accesibilidad y visibilidad */
+    min-width: 60px;
+    min-height: 60px;
+    flex-shrink: 0;
+    pointer-events: auto;
+    margin: 0;
+    transform-origin: center;
+    
+    /* Prevenir que sea movido por otros layouts */
+    float: none !important;
+    clear: none !important;
+    
+    /* Color del icono */
+    color: #667eea;
+}
+
+.controls-modal-trigger:hover {
+    transform: scale(1.1) !important;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    color: #5a6fd8;
+}
+
+.controls-modal-trigger:active {
+    transform: scale(0.95) !important;
+}
+
+/* Enhanced Responsive Layout Styles - Simplificado */
+.turn-indicator {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.game-board {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    min-height: 400px;
+}
+
+/* Mobile Optimization */
+@media (max-width: 767px) {
+    .layout-container {
+        padding: 1rem;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {        gap: 0.75rem;
+        min-height: 70vh;
+    }
+    
+    .game-board {
+        min-height: 300px;
+    }
+      .controls-modal-trigger {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999; /* Z-index muy alto para estar siempre visible */
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        /* Asegurar que siempre esté visible y accesible */
+        min-width: 50px;
+        min-height: 50px;
+        flex-shrink: 0;
+        /* Evitar que otros elementos lo cubran */
+        pointer-events: auto;
+        /* Mantener siempre en esquina superior derecha */
+        margin: 0;
+        transform-origin: center;
+    }
+
+    .controls-modal-trigger:hover {
+        transform: scale(1.1);
+        background: rgba(255, 255, 255, 1);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* Advanced Responsive Layout Design */
+@media (max-width: 320px) {
+    .layout-container {
+        padding: 0.5rem;
+        min-height: 100vh;
+    }
+    
+    .layout-content {
+        gap: 0.5rem;
+        padding: 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 0.5rem;
+        min-height: 85vh;
+        padding: 0.5rem;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 0.5rem;
+    }
+    
+    .game-board {
+        min-height: 250px;
+        padding: 0.5rem;
+    }
+      .controls-modal-trigger {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 45px;
+        height: 45px;
+        font-size: 1.125rem;
+        border-width: 1px;
+        z-index: 9999;
+        /* Asegurar visibilidad en pantallas pequeñas */
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .layout-container {
+        padding: 0.75rem;
+    }
+    
+    .layout-content {
+        gap: 0.75rem;
+        padding: 0.25rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 0.75rem;
+        min-height: 80vh;
+        padding: 0.75rem;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 0.75rem;
+    }
+    
+    .game-board {
+        min-height: 280px;
+        padding: 0.75rem;
+    }
+      .controls-modal-trigger {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 48px;
+        height: 48px;
+        font-size: 1.1875rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .layout-container {
+        padding: 1rem;
+    }
+    
+    .layout-content {
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 1rem;
+        min-height: 75vh;
+        padding: 1rem;
+        max-width: 600px;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 1rem;
+    }
+    
+    .game-board {
+        min-height: 320px;
+        padding: 1rem;
+    }
+      .controls-modal-trigger {
+        top: 1rem;
+        right: 1rem;
+        width: 52px;
+        height: 52px;
+        font-size: 1.3125rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .layout-container {
+        padding: 1.5rem;
+    }
+    
+    .layout-content {
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 1.5rem;
+        min-height: 70vh;
+        padding: 1.5rem;
+        max-width: 750px;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 1.5rem;
+    }
+    
+    .game-board {
+        min-height: 400px;
+        padding: 1.5rem;
+    }
+      .controls-modal-trigger {
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 56px;
+        height: 56px;
+        font-size: 1.375rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .layout-container {
+        padding: 2rem 3rem;
+    }
+    
+    .layout-content {
+        gap: 2rem;
+        padding: 1.5rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 2rem;
+        min-height: 75vh;
+        padding: 2rem;
+        max-width: 900px;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 2rem;
+    }
+    
+    .game-board {
+        min-height: 450px;
+        padding: 2rem;
+    }
+      .controls-modal-trigger {
+        top: 2rem;
+        right: 2rem;
+        width: 58px;
+        height: 58px;
+        font-size: 1.4375rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .layout-container {
+        padding: 3rem 4rem;
+    }
+    
+    .layout-content {
+        gap: 2.5rem;
+        padding: 2rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 2.5rem;
+        min-height: 80vh;
+        padding: 2.5rem;
+        max-width: 1100px;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 2.5rem;
+    }
+    
+    .game-board {
+        min-height: 500px;
+        padding: 2.5rem;
+    }
+      .controls-modal-trigger {
+        top: 2.5rem;
+        right: 2.5rem;
+        width: 62px;
+        height: 62px;
+        font-size: 1.5rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (min-width: 1400px) {
+    .layout-container {
+        padding: 4rem 6rem;
+    }
+    
+    .layout-content {
+        gap: 3rem;
+        padding: 3rem 0;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 3rem;
+        min-height: 85vh;
+        padding: 3rem;
+        max-width: 1300px;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 3rem;
+    }
+    
+    .game-board {
+        min-height: 550px;
+        padding: 3rem;
+    }
+      .controls-modal-trigger {
+        top: 3rem;
+        right: 3rem;
+        width: 65px;
+        height: 65px;
+        font-size: 1.625rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .layout-container {
+        padding: 0.5rem 1rem;
+        align-items: center;
+    }
+    
+    .layout-content {
+        gap: 0.5rem;
+        padding: 0;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .tic-tac-toe-game,
+    .dots-box-game {
+        gap: 0.5rem;
+        min-height: auto;
+        max-height: 85vh;
+        padding: 0.5rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .turn-indicator {
+        margin-bottom: 0;
+        margin-right: 1rem;
+        flex: 0 0 auto;
+        writing-mode: vertical-lr;
+        text-orientation: mixed;
+    }
+    
+    .game-board {
+        min-height: auto;
+        max-height: 80vh;
+        padding: 0.5rem;
+        flex: 1;
+    }
+      .controls-modal-trigger {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+        z-index: 9999;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        /* En landscape, asegurar que siempre sea visible */
+        position: fixed;
+        margin: 0;
+    }
+}
+
+/* High DPI screens optimization */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .layout-container::before {
+        background-size: 200% 200%, 200% 200%, 200% 200%;
+    }
+    
+    .controls-modal-trigger {
+        border-width: 0.5px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .layout--default,
+    .layout--gaming {
+        animation: none;
+        background-position: 0% 50%;
+    }
+    
+    .controls-modal-trigger {
+        transition: none;
+    }
+    
+    .controls-modal-trigger:hover {
+        transform: none;
+    }
 }

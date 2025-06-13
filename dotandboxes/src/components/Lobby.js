@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
-import { 
-  Layout, 
-  Card, 
-  Button, 
-  Input, 
-  Select, 
-  Header, 
-  GameGrid, 
+import {
+  Layout,
+  Card,
+  Button,
+  Input,
+  Select,
+  Header,
+  GameGrid,
   PlayerList,
   Alert
 } from "./ui";
@@ -22,7 +22,7 @@ function Lobby() {
   const [gameType, setGameType] = useState('dots-boxes');
   const [players, setPlayers] = useState([]);
   const [roomGridSize, setRoomGridSize] = useState(null);
-  const [roomGameType, setRoomGameType] = useState(null);  const [isWaitingForPlayers, setIsWaitingForPlayers] = useState(false);
+  const [roomGameType, setRoomGameType] = useState(null); const [isWaitingForPlayers, setIsWaitingForPlayers] = useState(false);
   const [customGridSize, setCustomGridSize] = useState("");
   const [selectedGame, setSelectedGame] = useState(null);
   const [alert, setAlert] = useState(null);
@@ -49,7 +49,7 @@ function Lobby() {
       if (data.players && data.players.length > 0) {
         setIsWaitingForPlayers(true);
       }
-    });    socket.on("startGame", (data) => {
+    }); socket.on("startGame", (data) => {
       console.log("Recibido startGame:", data);
 
       // Navegar al juego correspondiente según el tipo
@@ -64,7 +64,7 @@ function Lobby() {
           gameType: data.gameType
         },
       });
-    });    socket.on("roomFull", () => {
+    }); socket.on("roomFull", () => {
       setAlert({
         type: 'error',
         title: 'Error al unirse',
@@ -103,7 +103,7 @@ function Lobby() {
     }
 
     console.log("Intentando unirse a sala:", { roomCode, playerName, gameType, gridSize });
-    setIsWaitingForPlayers(true);    const finalGridSize = gameType === 'tic-tac-toe' ? 3 :
+    setIsWaitingForPlayers(true); const finalGridSize = gameType === 'tic-tac-toe' ? 3 :
       (gridSize === "custom" ? parseInt(customGridSize) : parseInt(gridSize));
 
     socket.emit("joinRoom", {
@@ -163,8 +163,8 @@ function Lobby() {
     return (
       <Layout variant="gaming">
         <Card size="extra-large" variant="glass">
-          <Header 
-            title="Elige un juego" 
+          <Header
+            title="Elige un juego"
             icon="🎮"
             variant="gaming"
             size="large"
@@ -182,28 +182,28 @@ function Lobby() {
   }
   return (
     <Layout variant="default">
-      <Card size="large" variant="glass">        <Header 
-          title="Juegos Multijugador" 
-          icon="🎮"
-          variant="gradient"
-          size="large"
+      <Card size="large" variant="glass">        <Header
+        title="Juegos Multijugador"
+        icon="🎮"
+        variant="gradient"
+        size="large"
+      >
+        <Button
+          variant="minimal"
+          size="small"
+          onClick={() => {
+            setSelectedGame(null);
+            setRoomGameType(null);
+            setRoomGridSize(null);
+            setGridSize(3);
+            setCustomGridSize("");
+            setAlert(null);
+          }}
+          icon="←"
         >
-          <Button
-            variant="minimal"
-            size="small"
-            onClick={() => {
-              setSelectedGame(null);
-              setRoomGameType(null);
-              setRoomGridSize(null);
-              setGridSize(3);
-              setCustomGridSize("");
-              setAlert(null);
-            }}
-            icon="←"
-          >
-            Ir atrás
-          </Button>
-        </Header>
+          Ir atrás
+        </Button>
+      </Header>
 
         {alert && (
           <Alert
@@ -309,7 +309,7 @@ function Lobby() {
           </div>
         ) : (
           <div className="waiting-section">
-            <Header 
+            <Header
               title={`Sala: ${roomCode}`}
               subtitle={`${getGameTypeLabel(roomGameType || gameType)} - ${players.length}/2 jugadores`}
               variant="primary"

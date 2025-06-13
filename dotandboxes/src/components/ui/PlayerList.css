@@ -1,319 +1,620 @@
 /* PlayerList Component Styles */
 .player-list {
-  width: 100%;
+    width: 100%;
 }
 
 .player-list__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .player-list__title {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
 }
 
 .player-list__status {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.875rem;
-  color: #6b7280;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
 }
 
 .player-list__indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #f59e0b;
-  animation: pulse 2s infinite;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #f59e0b;
+    animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
 }
 
 .player-list__items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .player-list__waiting {
-  margin-top: 1.5rem;
-  text-align: center;
-  padding: 1rem;
-  background: rgba(249, 250, 251, 0.8);
-  border-radius: 0.75rem;
-  border: 1px dashed #d1d5db;
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 1rem;
+    background: rgba(249, 250, 251, 0.8);
+    border-radius: 0.75rem;
+    border: 1px dashed #d1d5db;
 }
 
 .player-list__waiting p {
-  margin: 0.5rem 0 0 0;
-  color: #6b7280;
-  font-size: 0.875rem;
+    margin: 0.5rem 0 0 0;
+    color: #6b7280;
+    font-size: 0.875rem;
 }
 
 /* Player Card Styles */
 .player-card {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.95);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-  position: relative;
-  backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(10px);
 }
 
 .player-card--current {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .player-card--placeholder {
-  opacity: 0.6;
-  border-style: dashed;
-  border-color: #d1d5db;
-  background: rgba(249, 250, 251, 0.8);
+    opacity: 0.6;
+    border-style: dashed;
+    border-color: #d1d5db;
+    background: rgba(249, 250, 251, 0.8);
 }
 
 .player-card__avatar {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .player-card__avatar--placeholder {
-  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+    background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
 }
 
 .player-card__avatar-text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .player-card__position {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 20px;
-  height: 20px;
-  background: #f59e0b;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.75rem;
-  font-weight: 700;
-  border: 2px solid white;
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background: #f59e0b;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 2px solid white;
 }
 
 .player-card--current .player-card__position {
-  background: #10b981;
+    background: #10b981;
 }
 
 .player-card__info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-width: 0;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
 }
 
 .player-card__name {
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.875rem;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .player-card--placeholder .player-card__name {
-  color: #9ca3af;
-  font-style: italic;
+    color: #9ca3af;
+    font-style: italic;
 }
 
 .player-card__badge {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: white;
-  font-size: 0.625rem;
-  font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  flex-shrink: 0;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
 }
 
 .player-card__status {
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  font-size: 0.75rem;
-  color: #10b981;
-  font-weight: 500;
-  flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: #10b981;
+    font-weight: 500;
+    flex-shrink: 0;
 }
 
 .player-card__status--pending {
-  color: #6b7280;
+    color: #6b7280;
 }
 
 .player-card__status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  animation: statusPulse 2s infinite;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    animation: statusPulse 2s infinite;
 }
 
 .player-card__status--pending .player-card__status-dot {
-  background: #6b7280;
-  animation: none;
+    background: #6b7280;
+    animation: none;
 }
 
 @keyframes statusPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
 }
 
 /* Waiting Animation */
 .waiting-animation {
-  display: flex;
-  justify-content: center;
-  gap: 0.25rem;
-  margin-bottom: 0.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .waiting-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #667eea;
-  animation: waitingBounce 1.4s infinite ease-in-out both;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #667eea;
+    animation: waitingBounce 1.4s infinite ease-in-out both;
 }
 
-.waiting-dot:nth-child(1) { animation-delay: -0.32s; }
-.waiting-dot:nth-child(2) { animation-delay: -0.16s; }
+.waiting-dot:nth-child(1) {
+    animation-delay: -0.32s;
+}
+
+.waiting-dot:nth-child(2) {
+    animation-delay: -0.16s;
+}
 
 @keyframes waitingBounce {
-  0%, 80%, 100% { 
-    transform: scale(0);
-  } 
-  40% { 
-    transform: scale(1);
-  }
+    0%, 80%, 100% {
+        transform: scale(0);
+    }
+
+    40% {
+        transform: scale(1);
+    }
 }
 
 /* Variant Styles */
 .player-list--glass .player-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px) saturate(180%);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .player-list--dark {
-  color: #e5e7eb;
+    color: #e5e7eb;
 }
 
 .player-list--dark .player-list__title {
-  color: #e5e7eb;
+    color: #e5e7eb;
 }
 
 .player-list--dark .player-card {
-  background: rgba(55, 65, 81, 0.9);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(55, 65, 81, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .player-list--dark .player-card__name {
-  color: #e5e7eb;
+    color: #e5e7eb;
 }
 
 .player-list--dark .player-list__waiting {
-  background: rgba(55, 65, 81, 0.8);
-  border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(55, 65, 81, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 /* Size Variants */
 .player-list--small .player-card {
-  padding: 0.75rem;
-  gap: 0.75rem;
+    padding: 0.75rem;
+    gap: 0.75rem;
 }
 
 .player-list--small .player-card__avatar {
-  width: 36px;
-  height: 36px;
+    width: 36px;
+    height: 36px;
 }
 
 .player-list--small .player-card__avatar-text {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .player-list--small .player-card__position {
-  width: 16px;
-  height: 16px;
-  font-size: 0.625rem;
+    width: 16px;
+    height: 16px;
+    font-size: 0.625rem;
 }
 
 .player-list--large .player-card {
-  padding: 1.25rem;
-  gap: 1.25rem;
+    padding: 1.25rem;
+    gap: 1.25rem;
 }
 
 .player-list--large .player-card__avatar {
-  width: 56px;
-  height: 56px;
+    width: 56px;
+    height: 56px;
 }
 
 .player-list--large .player-card__avatar-text {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .player-list--large .player-card__name {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .player-list__header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-  }
-  
-  .player-card {
-    padding: 0.875rem;
-    gap: 0.875rem;
-  }
-  
-  .player-card__info {
-    gap: 0.5rem;
-  }
-  
-  .player-card__name {
-    font-size: 0.8125rem;
-  }
+    .player-list__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .player-card {
+        padding: 0.875rem;
+        gap: 0.875rem;
+    }
+
+    .player-card__info {
+        gap: 0.5rem;
+    }
+
+    .player-card__name {
+        font-size: 0.8125rem;
+    }
+}
+
+/* Advanced Responsive PlayerList Design */
+@media (max-width: 320px) {
+    .player-list {
+        margin: 0.5rem 0;
+    }
+    
+    .player-list__header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .player-list__title {
+        font-size: 1rem;
+        text-align: center;
+    }
+    
+    .player-list__status {
+        justify-content: center;
+        font-size: 0.8125rem;
+    }
+    
+    .player-list__items {
+        gap: 0.5rem;
+    }
+    
+    .player-card {
+        padding: 0.75rem;
+        gap: 0.75rem;
+        border-radius: 0.5rem;
+    }
+    
+    .player-card__avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1rem;
+    }
+    
+    .player-card__position {
+        width: 16px;
+        height: 16px;
+        font-size: 0.625rem;
+        top: -2px;
+        right: -2px;
+    }
+    
+    .player-card__name {
+        font-size: 0.8125rem;
+    }
+    
+    .player-card__badge {
+        font-size: 0.5625rem;
+        padding: 0.1875rem 0.375rem;
+    }
+    
+    .player-card__status {
+        font-size: 0.6875rem;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .player-list {
+        margin: 0.75rem 0;
+    }
+    
+    .player-list__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.625rem;
+        margin-bottom: 1rem;
+    }
+    
+    .player-list__title {
+        font-size: 1.0625rem;
+    }
+    
+    .player-list__items {
+        gap: 0.625rem;
+    }
+    
+    .player-card {
+        padding: 0.875rem;
+        gap: 0.875rem;
+        border-radius: 0.625rem;
+    }
+    
+    .player-card__avatar {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1.125rem;
+    }
+    
+    .player-card__position {
+        width: 18px;
+        height: 18px;
+        font-size: 0.6875rem;
+    }
+    
+    .player-card__name {
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .player-list {
+        margin: 1rem 0;
+        max-width: 450px;
+    }
+    
+    .player-list__header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.125rem;
+    }
+    
+    .player-list__items {
+        gap: 0.875rem;
+    }
+    
+    .player-card {
+        padding: 1rem;
+        gap: 1rem;
+        border-radius: 0.75rem;
+    }
+    
+    .player-card__avatar {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1.1875rem;
+    }
+    
+    .player-card__name {
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .player-list {
+        margin: 1.25rem 0;
+        max-width: 500px;
+    }
+    
+    .player-list__header {
+        margin-bottom: 1.25rem;
+    }
+    
+    .player-list__title {
+        font-size: 1.1875rem;
+    }
+    
+    .player-list__items {
+        gap: 1rem;
+    }
+    
+    .player-card {
+        padding: 1.125rem;
+        gap: 1.125rem;
+        border-radius: 0.875rem;
+    }
+    
+    .player-card__avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1.3125rem;
+    }
+    
+    .player-card__name {
+        font-size: 0.9375rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .player-list {
+        margin: 0;
+        max-width: 550px;
+    }
+    
+    .player-list__header {
+        margin-bottom: 1.5rem;
+    }
+    
+    .player-list__title {
+        font-size: 1.25rem;
+    }
+    
+    .player-list__items {
+        gap: 1.25rem;
+    }
+    
+    .player-card {
+        padding: 1.25rem;
+        gap: 1.25rem;
+        border-radius: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .player-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .player-card__avatar {
+        width: 52px;
+        height: 52px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1.375rem;
+    }
+    
+    .player-card__name {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .player-list {
+        max-width: 600px;
+    }
+    
+    .player-card {
+        padding: 1.375rem;
+        gap: 1.375rem;
+    }
+    
+    .player-card__avatar {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1.5rem;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .player-list {
+        margin: 0.5rem 0;
+    }
+    
+    .player-list__header {
+        margin-bottom: 0.75rem;
+    }
+    
+    .player-list__items {
+        gap: 0.5rem;
+        max-height: 250px;
+        overflow-y: auto;
+    }
+    
+    .player-card {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .player-card__avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .player-card__avatar-text {
+        font-size: 1rem;
+    }
+    
+    .player-card__name {
+        font-size: 0.8125rem;
+    }
 }

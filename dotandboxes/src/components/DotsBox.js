@@ -3,16 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import { useVoiceChat } from "../hooks/useVoice";
-import { 
-  Layout, 
-  GameInfo, 
-  VoiceControls, 
-  GameStatus, 
-  WaitingRoom,
-  TurnIndicator,
-  ScoreBoard,
-  DotsBoxBoard,
-  DebugPanel
+import {
+    Layout,
+    TurnIndicator,
+    DotsBoxBoard,
+    Modal,
+    GameControls,
+    WaitingRoom
 } from "./ui";
 
 import "./DotsBox.css";
@@ -22,7 +19,7 @@ const DotsBox = () => {
     const location = useLocation();
     const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
     const socket = useSocket(); // ✅ primero obtenés el socket
-    
+
     const {
         micEnabled,
         audioEnabled,
@@ -41,13 +38,13 @@ const DotsBox = () => {
 
     console.log("Location state:", location.state);
     console.log("Players:", players);
-    console.log("Grid Size:", initialGridSize);    const [GRID_SIZE, setGridSize] = useState(initialGridSize);
+    console.log("Grid Size:", initialGridSize); const [GRID_SIZE, setGridSize] = useState(initialGridSize);
     const [horizontalLines, setHorizontalLines] = useState([]);
     const [verticalLines, setVerticalLines] = useState([]);
     const [boxes, setBoxes] = useState([]);
-    const [turnIndex, setTurnIndex] = useState(0);
-    const [scores, setScores] = useState({});
+    const [turnIndex, setTurnIndex] = useState(0);    const [scores, setScores] = useState({});
     const [showDebug, setShowDebug] = useState(false);
+    const [showControlsModal, setShowControlsModal] = useState(false);
 
     // Funciones helper para manejo de jugadores
     const getPlayerNumber = (playerName) => {
@@ -231,7 +228,7 @@ const DotsBox = () => {
         if (type === "v" && verticalLines[row] && verticalLines[row][col]) {
             console.log("Línea vertical ya marcada");
             return;
-        }        const move = { type, row, col };
+        } const move = { type, row, col };
         console.log("Haciendo movimiento:", move);
         applyMove(move, null, null, true);
     };
@@ -255,12 +252,53 @@ const DotsBox = () => {
     const totalBoxes = GRID_SIZE * GRID_SIZE;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
-    const currentPlayerName = players[turnIndex]?.name;
-
-    return (
+    const currentPlayerName = players[turnIndex]?.name;    return (
         <Layout variant="gaming">
+            {/* Botón flotante para abrir modal de controles */}
+            <button 
+                className="controls-modal-trigger"
+                onClick={() => setShowControlsModal(true)}
+                title="Abrir controles"
+            >
+                ⚙️
+            </button>
+
             <div className="dots-box-game">
-                <GameInfo
+                {!gameFinished && (
+                    <div className="turn-indicator">
+                        <TurnIndicator
+                            isMyTurn={isMyTurn}
+                            currentPlayerName={currentPlayerName}
+                            currentPlayer={playerName}
+                            gameType="dots-boxes"
+                            variant="glass"
+                        />
+                    </div>
+                )}
+
+                <div className="game-board">
+                    <DotsBoxBoard
+                        gridSize={GRID_SIZE}
+                        horizontalLines={horizontalLines}
+                        verticalLines={verticalLines}
+                        boxes={boxes}
+                        onLineClick={handleClick}
+                        isMyTurn={isMyTurn}
+                        players={players}
+                        currentPlayer={playerName}
+                        variant="glass"
+                    />
+                </div>
+            </div>
+
+            {/* Modal con todos los controles */}
+            <Modal
+                isOpen={showControlsModal}
+                onClose={() => setShowControlsModal(false)}
+                title="🎮 Controles del Juego"
+                variant="glass"
+            >
+                <GameControls
                     gameTitle="Dots & Boxes"
                     gameIcon="⚪"
                     roomCode={roomCode}
@@ -271,10 +309,6 @@ const DotsBox = () => {
                     gameType="dots-boxes"
                     gameFinished={gameFinished}
                     scores={scores}
-                    variant="glass"
-                />
-
-                <VoiceControls
                     micEnabled={micEnabled}
                     audioEnabled={audioEnabled}
                     toggleMic={toggleMic}
@@ -283,75 +317,23 @@ const DotsBox = () => {
                     connectionState={connectionState}
                     forceEnableControls={forceEnableControls}
                     reconnectVoice={reconnectVoice}
-                    variant="glass"
-                />
-
-                {!gameFinished && (
-                    <TurnIndicator
-                        isMyTurn={isMyTurn}
-                        currentPlayerName={currentPlayerName}
-                        currentPlayer={playerName}
-                        gameType="dots-boxes"
-                        variant="glass"
-                    />
-                )}
-
-                <ScoreBoard
-                    players={players}
-                    scores={scores}
-                    currentPlayer={playerName}
-                    gameType="dots-boxes"
-                    variant="glass"
-                />
-
-                <DotsBoxBoard
-                    gridSize={GRID_SIZE}
-                    horizontalLines={horizontalLines}
-                    verticalLines={verticalLines}
-                    boxes={boxes}
-                    onLineClick={handleClick}
-                    isMyTurn={isMyTurn}
-                    players={players}
-                    currentPlayer={playerName}
-                    variant="glass"
-                />
-
-                {gameFinished && (
-                    <GameStatus
-                        gameEnded={gameFinished}
-                        winner={Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b)}
-                        isDraw={false}
-                        currentPlayer={playerName}
-                        onRestart={() => {
-                            // Implementar restart si es necesario
-                        }}
-                        gameType="dots-boxes"
-                        players={players}
-                        scores={scores}
-                        variant="glass"
-                    />
-                )}
-
-                <DebugPanel
-                    players={players}
-                    turnIndex={turnIndex}
-                    currentPlayer={playerName}
-                    isMyTurn={isMyTurn}
                     gameEnded={gameFinished}
-                    connectionState={connectionState}
-                    isConnecting={isConnecting}
-                    micEnabled={micEnabled}
-                    audioEnabled={audioEnabled}
+                    winner={gameFinished ? Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b) : null}
+                    isDraw={false}
+                    onRestart={() => {
+                        // Implementar restart si es necesario
+                    }}
+                    isMyTurn={isMyTurn}
                     customData={{
                         'Grid Size': `${GRID_SIZE}x${GRID_SIZE}`,
                         'Completed Boxes': `${completedBoxes}/${totalBoxes}`,
                         'Scores': JSON.stringify(scores)
                     }}
-                    show={showDebug}
-                    onToggle={() => setShowDebug(!showDebug)}
+                    showDebug={showDebug}
+                    onToggleDebug={() => setShowDebug(!showDebug)}
                     variant="glass"
                 />
-            </div>
+            </Modal>
         </Layout>
     );
 };

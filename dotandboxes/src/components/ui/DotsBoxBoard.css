@@ -1,291 +1,848 @@
 .dots-box-board-card {
-  margin: 1.5rem 0;
-  padding: 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(15px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    padding: 3rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .board-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+    padding: 2rem;
 }
 
 .dots-box-board {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  border-radius: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .board-row {
-  display: flex;
-  gap: 2px;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Dots */
 .dot {
-  width: 12px;
-  height: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-  position: relative;
-  z-index: 3;
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    position: relative;
+    z-index: 3;
 }
 
 .dot::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
-  border-radius: 50%;
-  z-index: -1;
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+    border-radius: 50%;
+    z-index: -1;
 }
 
 /* Lines */
 .h-line, .v-line {
-  background: rgba(200, 200, 200, 0.6);
-  transition: all 0.3s ease;
-  position: relative;
-  border-radius: 2px;
+    background: rgba(200, 200, 200, 0.6);
+    transition: all 0.3s ease;
+    position: relative;
+    border-radius: 2px;
 }
 
 .h-line {
-  width: 60px;
-  height: 4px;
+    width: 60px;
+    height: 4px;
 }
 
 .v-line {
-  width: 4px;
-  height: 60px;
+    width: 4px;
+    height: 60px;
 }
 
 .h-line.clickable:hover, .v-line.clickable:hover {
-  background: rgba(76, 175, 80, 0.7);
-  transform: scale(1.1);
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    background: rgba(76, 175, 80, 0.7);
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
 .h-line.taken, .v-line.taken {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.3);
-  animation: lineAppear 0.4s ease-out;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.3);
+    animation: lineAppear 0.4s ease-out;
 }
 
 @keyframes lineAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Boxes */
 .box {
-  width: 60px;
-  height: 60px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.4s ease;
-  backdrop-filter: blur(5px);
-  position: relative;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
+    position: relative;
 }
 
 .box.player1 {
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.1));
-  border-color: rgba(244, 67, 54, 0.4);
-  animation: boxClaimed 0.6s ease-out;
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(255, 87, 34, 0.1));
+    border-color: rgba(244, 67, 54, 0.4);
+    animation: boxClaimed 0.6s ease-out;
 }
 
 .box.player2 {
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(3, 169, 244, 0.1));
-  border-color: rgba(33, 150, 243, 0.4);
-  animation: boxClaimed 0.6s ease-out;
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.2), rgba(3, 169, 244, 0.1));
+    border-color: rgba(33, 150, 243, 0.4);
+    animation: boxClaimed 0.6s ease-out;
 }
 
 .box.owned-by-me {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(139, 195, 74, 0.15));
-  border-color: rgba(76, 175, 80, 0.5);
-  box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(139, 195, 74, 0.15));
+    border-color: rgba(76, 175, 80, 0.5);
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
 }
 
 @keyframes boxClaimed {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(180deg);
-  }
-  50% {
-    transform: scale(1.1) rotate(90deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(180deg);
+    }
+
+    50% {
+        transform: scale(1.1) rotate(90deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
 }
 
 .box-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 .box-initial {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2c3e50;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .box.player1 .box-initial {
-  color: #e53e3e;
+    color: #e53e3e;
 }
 
 .box.player2 .box-initial {
-  color: #3182ce;
+    color: #3182ce;
 }
 
 .box.owned-by-me .box-initial {
-  color: #38a169;
-  animation: myBoxPulse 2s ease-in-out infinite alternate;
+    color: #38a169;
+    animation: myBoxPulse 2s ease-in-out infinite alternate;
 }
 
 @keyframes myBoxPulse {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1.1);
-  }
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
 }
 
 /* Responsive adjustments */
 .dots-box-board.grid-4 .h-line {
-  width: 45px;
+    width: 45px;
 }
 
 .dots-box-board.grid-4 .v-line {
-  height: 45px;
+    height: 45px;
 }
 
 .dots-box-board.grid-4 .box {
-  width: 45px;
-  height: 45px;
+    width: 45px;
+    height: 45px;
 }
 
 .dots-box-board.grid-4 .dot {
-  width: 10px;
-  height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 .dots-box-board.grid-5 .h-line {
-  width: 35px;
+    width: 35px;
 }
 
 .dots-box-board.grid-5 .v-line {
-  height: 35px;
+    height: 35px;
 }
 
 .dots-box-board.grid-5 .box {
-  width: 35px;
-  height: 35px;
+    width: 35px;
+    height: 35px;
 }
 
 .dots-box-board.grid-5 .dot {
-  width: 8px;
-  height: 8px;
+    width: 8px;
+    height: 8px;
 }
 
 .dots-box-board.grid-5 .box-initial {
-  font-size: 1.1rem;
+    font-size: 1.1rem;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .dots-box-board-card {
-    padding: 1rem;
-    margin: 1rem 0;
-  }
-  
-  .dots-box-board {
-    padding: 15px;
-  }
-  
-  .h-line {
-    width: 50px;
-    height: 3px;
-  }
-  
-  .v-line {
-    width: 3px;
-    height: 50px;
-  }
-  
-  .box {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .dot {
-    width: 10px;
-    height: 10px;
-  }
-  
-  .box-initial {
-    font-size: 1.2rem;
-  }
+    .dots-box-board-card {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    .dots-box-board {
+        padding: 15px;
+    }
+
+    .h-line {
+        width: 50px;
+        height: 3px;
+    }
+
+    .v-line {
+        width: 3px;
+        height: 50px;
+    }
+
+    .box {
+        width: 50px;
+        height: 50px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+
+    .box-initial {
+        font-size: 1.2rem;
+    }
 }
 
 @media (max-width: 480px) {
-  .h-line {
-    width: 40px;
-    height: 3px;
-  }
-  
-  .v-line {
-    width: 3px;
-    height: 40px;
-  }
-  
-  .box {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .dot {
-    width: 8px;
-    height: 8px;
-  }
-  
-  .box-initial {
-    font-size: 1rem;
-  }
-  
-  .dots-box-board {
-    padding: 10px;
-  }
+    .h-line {
+        width: 40px;
+        height: 3px;
+    }
+
+    .v-line {
+        width: 3px;
+        height: 40px;
+    }
+
+    .box {
+        width: 40px;
+        height: 40px;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .box-initial {
+        font-size: 1rem;
+    }
+
+    .dots-box-board {
+        padding: 10px;
+    }
+}
+
+/* Responsive DotsBoxBoard Layout */
+@media (min-width: 1024px) {
+    .dots-box-board-card {
+        margin: 0;
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    
+    .board-container {
+        flex: 1;
+        min-height: 0;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .dots-box-board {
+        padding: 1.5rem;
+        max-width: 90%;
+        max-height: 50vh;
+        overflow: auto;
+    }
+    
+    /* Escalar elementos según el tamaño del grid */
+    .dot {
+        width: clamp(8px, 1.5vw, 12px);
+        height: clamp(8px, 1.5vw, 12px);
+    }
+    
+    .horizontal-line,
+    .vertical-line {
+        transition: all 0.2s ease;
+    }
+    
+    .horizontal-line {
+        height: clamp(3px, 0.5vw, 6px);
+        min-width: clamp(30px, 4vw, 60px);
+        max-width: clamp(40px, 5vw, 80px);
+    }
+    
+    .vertical-line {
+        width: clamp(3px, 0.5vw, 6px);
+        min-height: clamp(30px, 4vw, 60px);
+        max-height: clamp(40px, 5vw, 80px);
+    }
+    
+    .box {
+        min-width: clamp(30px, 4vw, 60px);
+        max-width: clamp(40px, 5vw, 80px);
+        min-height: clamp(30px, 4vw, 60px);
+        max-height: clamp(40px, 5vw, 80px);
+    }
+}
+
+@media (min-width: 1200px) {
+    .dots-box-board-card {
+        padding: 2rem;
+    }
+    
+    .board-container {
+        padding: 1.5rem;
+    }
+    
+    .dots-box-board {
+        padding: 2rem;
+        max-height: 60vh;
+    }
+    
+    .dot {
+        width: clamp(10px, 1.2vw, 14px);
+        height: clamp(10px, 1.2vw, 14px);
+    }
+    
+    .horizontal-line {
+        height: clamp(4px, 0.4vw, 8px);
+        min-width: clamp(40px, 3vw, 70px);
+        max-width: clamp(50px, 4vw, 90px);
+    }
+    
+    .vertical-line {
+        width: clamp(4px, 0.4vw, 8px);
+        min-height: clamp(40px, 3vw, 70px);
+        max-height: clamp(50px, 4vw, 90px);
+    }
+    
+    .box {
+        min-width: clamp(40px, 3vw, 70px);
+        max-width: clamp(50px, 4vw, 90px);
+        min-height: clamp(40px, 3vw, 70px);
+        max-height: clamp(50px, 4vw, 90px);
+    }
+}
+
+/* Ultra-wide desktop optimization */
+@media (min-width: 1400px) {
+    .dots-box-board {
+        max-height: 70vh;
+        padding: 2.5rem;
+    }
+}
+
+/* Mobile DotsBoxBoard adjustments */
+@media (max-width: 767px) {
+    .dots-box-board-card {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+    
+    .board-container {
+        min-height: 300px;
+        padding: 0.5rem;
+    }
+    
+    .dots-box-board {
+        padding: 1rem;
+        gap: 2px;
+        max-width: 95%;
+        overflow-x: auto;
+    }
+    
+    .board-row {
+        gap: 2px;
+    }
+    
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .horizontal-line {
+        height: 3px;
+        min-width: 25px;
+        max-width: 35px;
+    }
+    
+    .vertical-line {
+        width: 3px;
+        min-height: 25px;
+        max-height: 35px;
+    }
+    
+    .box {
+        min-width: 25px;
+        max-width: 35px;
+        min-height: 25px;
+        max-height: 35px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Tablet DotsBoxBoard adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .dots-box-board-card {
+        margin: 1.5rem 0;
+        padding: 2rem;
+    }
+    
+    .board-container {
+        min-height: 400px;
+        padding: 1rem;
+    }
+    
+    .dots-box-board {
+        padding: 1.5rem;
+        gap: 3px;
+    }
+    
+    .board-row {
+        gap: 3px;
+    }
+    
+    .dot {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .horizontal-line {
+        height: 4px;
+        min-width: 35px;
+        max-width: 50px;
+    }
+    
+    .vertical-line {
+        width: 4px;
+        min-height: 35px;
+        max-height: 50px;
+    }
+    
+    .box {
+        min-width: 35px;
+        max-width: 50px;
+        min-height: 35px;
+        max-height: 50px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Advanced Responsive DotsBoxBoard Design */
+@media (max-width: 320px) {
+    .dots-box-board-card {
+        margin: 0.75rem 0;
+        padding: 1rem;
+        border-radius: 12px;
+    }
+    
+    .board-container {
+        min-height: 250px;
+        padding: 0.5rem;
+    }
+    
+    .dots-box-board {
+        padding: 1rem;
+        gap: 2px;
+        border-radius: 12px;
+    }
+    
+    .board-row {
+        gap: 2px;
+    }
+    
+    .dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .dot::before {
+        top: -1px;
+        left: -1px;
+        right: -1px;
+        bottom: -1px;
+    }
+    
+    .h-line {
+        width: 25px;
+        height: 3px;
+    }
+    
+    .v-line {
+        width: 3px;
+        height: 25px;
+    }
+    
+    .box {
+        width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        font-size: 0.625rem;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 480px) {
+    .dots-box-board-card {
+        margin: 1rem 0;
+        padding: 1.25rem;
+        border-radius: 15px;
+    }
+    
+    .board-container {
+        min-height: 300px;
+        padding: 0.75rem;
+    }
+    
+    .dots-box-board {
+        padding: 1.25rem;
+        gap: 2px;
+        border-radius: 15px;
+    }
+    
+    .board-row {
+        gap: 2px;
+    }
+    
+    .dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .h-line {
+        width: 35px;
+        height: 3px;
+    }
+    
+    .v-line {
+        width: 3px;
+        height: 35px;
+    }
+    
+    .box {
+        width: 35px;
+        height: 35px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .dots-box-board-card {
+        margin: 1.25rem 0;
+        padding: 1.75rem;
+        border-radius: 18px;
+    }
+    
+    .board-container {
+        min-height: 350px;
+        padding: 1rem;
+    }
+    
+    .dots-box-board {
+        padding: 1.5rem;
+        gap: 3px;
+        border-radius: 18px;
+    }
+    
+    .board-row {
+        gap: 3px;
+    }
+    
+    .dot {
+        width: 9px;
+        height: 9px;
+    }
+    
+    .h-line {
+        width: 45px;
+        height: 3px;
+    }
+    
+    .v-line {
+        width: 3px;
+        height: 45px;
+    }
+    
+    .box {
+        width: 45px;
+        height: 45px;
+        border-radius: 7px;
+        font-size: 0.8125rem;
+    }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+    .dots-box-board-card {
+        margin: 0;
+        padding: 2.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .board-container {
+        flex: 1;
+        min-height: 0;
+        padding: 1.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .dots-box-board {
+        padding: 2rem;
+        gap: 4px;
+        border-radius: 22px;
+        max-width: 90vw;
+        max-height: 70vh;
+    }
+    
+    .board-row {
+        gap: 4px;
+    }
+    
+    .dot {
+        width: 11px;
+        height: 11px;
+    }
+    
+    .h-line {
+        width: 55px;
+        height: 4px;
+    }
+    
+    .v-line {
+        width: 4px;
+        height: 55px;
+    }
+    
+    .box {
+        width: 55px;
+        height: 55px;
+        border-radius: 8px;
+        font-size: 0.9375rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .dots-box-board-card {
+        margin: 0;
+        padding: 3rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .board-container {
+        flex: 1;
+        min-height: 0;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .dots-box-board {
+        padding: 2.5rem;
+        gap: 5px;
+        border-radius: 24px;
+        max-width: 85vw;
+        max-height: 75vh;
+    }
+    
+    .board-row {
+        gap: 5px;
+    }
+    
+    .dot {
+        width: 13px;
+        height: 13px;
+    }
+    
+    .h-line {
+        width: 65px;
+        height: 5px;
+    }
+    
+    .v-line {
+        width: 5px;
+        height: 65px;
+    }
+    
+    .box {
+        width: 65px;
+        height: 65px;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
+    
+    .h-line.clickable:hover, .v-line.clickable:hover {
+        transform: scale(1.05);
+    }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 1400px) {
+    .dots-box-board-card {
+        padding: 3.5rem;
+    }
+    
+    .board-container {
+        padding: 2.5rem;
+    }
+    
+    .dots-box-board {
+        padding: 3rem;
+        gap: 6px;
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+    
+    .board-row {
+        gap: 6px;
+    }
+    
+    .dot {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .h-line {
+        width: 70px;
+        height: 5px;
+    }
+    
+    .v-line {
+        width: 5px;
+        height: 70px;
+    }
+    
+    .box {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        font-size: 1.125rem;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+    .dots-box-board-card {
+        margin: 0.5rem 0;
+        padding: 1rem;
+    }
+    
+    .board-container {
+        min-height: 0;
+        max-height: 350px;
+        padding: 0.5rem;
+    }
+    
+    .dots-box-board {
+        padding: 1rem;
+        gap: 2px;
+        max-height: 300px;
+        overflow: auto;
+    }
+    
+    .board-row {
+        gap: 2px;
+    }
+    
+    .dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .h-line {
+        width: 30px;
+        height: 3px;
+    }
+    
+    .v-line {
+        width: 3px;
+        height: 30px;
+    }
+    
+    .box {
+        width: 30px;
+        height: 30px;
+        border-radius: 4px;
+        font-size: 0.625rem;
+    }
 }

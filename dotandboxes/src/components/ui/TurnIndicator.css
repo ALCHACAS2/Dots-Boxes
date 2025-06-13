@@ -1,93 +1,223 @@
 .turn-indicator {
-  margin: 1rem 0;
-  text-align: center;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+    margin: 1.5rem 0;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .turn-indicator.is-my-turn {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
-  border: 2px solid rgba(76, 175, 80, 0.3);
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+    border: 2px solid rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
 }
 
 .turn-indicator.is-opponent-turn {
-  background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 193, 7, 0.1));
-  border: 2px solid rgba(255, 152, 0, 0.3);
-  box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 193, 7, 0.1));
+    border: 2px solid rgba(255, 152, 0, 0.3);
+    box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
 }
 
 .turn-message {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-  font-size: 1.1rem;
-  position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    position: relative;
 }
 
 .turn-message.my-turn {
-  color: #4caf50;
+    color: #4caf50;
 }
 
 .turn-message.opponent-turn {
-  color: #ff9800;
+    color: #ff9800;
 }
 
 .turn-icon {
-  font-size: 1.5rem;
-  animation: pulse 2s infinite;
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
 }
 
 .turn-text {
-  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-  letter-spacing: 0.5px;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.5px;
 }
 
 /* Animación para el icono */
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }
 
 /* Efecto de brillo para el turno actual */
 .turn-indicator.is-my-turn::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
-  animation: shine 3s infinite;
-  pointer-events: none;
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+    animation: shine 3s infinite;
+    pointer-events: none;
 }
 
 @keyframes shine {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-  100% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
-  }
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .turn-message {
-    font-size: 1rem;
-    padding: 0.5rem 0.75rem;
-    gap: 0.5rem;
-  }
-  
-  .turn-icon {
-    font-size: 1.25rem;
-  }
+    .turn-message {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .turn-icon {
+        font-size: 1.25rem;
+    }
+}
+
+/* Responsive TurnIndicator Design */
+@media (max-width: 480px) {
+    .turn-indicator {
+        margin: 1rem 0;
+        border-radius: 12px;
+    }
+    
+    .turn-message {
+        gap: 0.5rem;
+        padding: 1rem;
+        font-size: clamp(0.875rem, 4vw, 1rem);
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .turn-icon {
+        font-size: 1.25rem;
+    }
+    
+    .turn-text {
+        letter-spacing: 0.25px;
+        line-height: 1.4;
+    }
+    
+    .player-symbol {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+    .turn-indicator {
+        margin: 1.25rem 0;
+        border-radius: 15px;
+    }
+    
+    .turn-message {
+        gap: 0.75rem;
+        padding: 1.125rem 1.25rem;
+        font-size: clamp(1rem, 3vw, 1.1rem);
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .turn-icon {
+        font-size: 1.375rem;
+    }
+    
+    .player-symbol {
+        font-size: 1.75rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .turn-indicator {
+        margin: 1.5rem auto;
+        max-width: 500px;
+        border-radius: 18px;
+    }
+    
+    .turn-message {
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        font-size: 1.15rem;
+    }
+    
+    .turn-icon {
+        font-size: 1.5rem;
+    }
+    
+    .player-symbol {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .turn-indicator {
+        margin: 0 auto 2rem auto;
+        max-width: 600px;
+        border-radius: 20px;
+    }
+    
+    .turn-message {
+        gap: 1.25rem;
+        padding: 1.5rem 2rem;
+        font-size: 1.25rem;
+    }
+    
+    .turn-icon {
+        font-size: 1.75rem;
+    }
+    
+    .turn-text {
+        letter-spacing: 0.75px;
+    }
+    
+    .player-symbol {
+        font-size: 2.25rem;
+    }
+    
+    .turn-indicator:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 0 25px rgba(76, 175, 80, 0.3),
+            0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (min-width: 1200px) {
+    .turn-indicator {
+        max-width: 700px;
+    }
+    
+    .turn-message {
+        gap: 1.5rem;
+        padding: 1.75rem 2.5rem;
+        font-size: 1.375rem;
+    }
+    
+    .turn-icon {
+        font-size: 2rem;
+    }
+    
+    .player-symbol {
+        font-size: 2.5rem;
+    }
 }

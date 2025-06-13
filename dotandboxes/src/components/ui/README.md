@@ -109,6 +109,41 @@ Indicadores de carga animados.
 />
 ```
 
+## ⚙️ Botón de Controles - Posición Fija
+
+El botón de controles (⚙️) está diseñado para estar **SIEMPRE** en la esquina superior derecha de la pantalla, sin importar:
+
+- El tamaño de la pantalla
+- La orientación del dispositivo  
+- El contenido de la página
+- Otros elementos CSS
+
+### 📍 Características del Botón:
+
+- **Posición**: `fixed` en `top: 1rem, right: 1rem`
+- **Z-index**: `999999` (máxima prioridad visual)
+- **Responsive**: Se adapta automáticamente al tamaño de pantalla
+- **Touch-friendly**: Tamaño mínimo de 44px en móviles
+- **Accesible**: Compatible con lectores de pantalla
+- **Animaciones**: Efectos sutiles que respetan `prefers-reduced-motion`
+
+### 📱 Tamaños Responsive:
+
+```css
+/* Mobile small */
+@media (max-width: 320px): 48x48px
+/* Mobile */
+@media (max-width: 480px): 52x52px  
+/* Tablet */
+@media (min-width: 768px): 60x60px
+/* Desktop */
+@media (min-width: 1200px): 64x64px
+```
+
+### 🎨 Archivo CSS Dedicado:
+
+Se ha creado `ControlsButton.css` con estilos específicos y `!important` para garantizar que el botón siempre mantenga su posición y funcionalidad, sin importar otros estilos CSS del proyecto.
+
 ## Características
 
 - **Responsive**: Todos los componentes son completamente responsivos

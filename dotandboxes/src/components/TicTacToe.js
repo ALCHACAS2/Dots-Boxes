@@ -3,15 +3,13 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import { useVoiceChat } from "../hooks/useVoice";
-import { 
-  Layout, 
-  GameInfo, 
-  VoiceControls, 
-  GameStatus, 
-  WaitingRoom,
-  TurnIndicator,
-  GameBoard,
-  DebugPanel
+import {
+    Layout,
+    TurnIndicator,
+    GameBoard,
+    Modal,
+    GameControls,
+    WaitingRoom
 } from "./ui";
 import "./TicTacToe.css";
 import "./TicTacToeLayout.css";
@@ -19,7 +17,7 @@ import "./TicTacToeLayout.css";
 const TicTacToe = () => {
     const location = useLocation();
     const { playerName, roomCode, players = [] } = location.state || {};
-    const socket = useSocket();    const {
+    const socket = useSocket(); const {
         micEnabled,
         audioEnabled,
         toggleMic,
@@ -32,12 +30,13 @@ const TicTacToe = () => {
         socket,
         roomCode,
         isInitiator: players[0]?.name === playerName
-    });    const [board, setBoard] = useState(Array(9).fill(null));
+    }); const [board, setBoard] = useState(Array(9).fill(null));
     const [turnIndex, setTurnIndex] = useState(0);
     const [gameEnded, setGameEnded] = useState(false);
     const [winner, setWinner] = useState(null);
     const [isDraw, setIsDraw] = useState(false);
     const [showDebug, setShowDebug] = useState(false);
+    const [showControlsModal, setShowControlsModal] = useState(false);
 
     // Obtener el símbolo del jugador actual ('X' o 'O')
     const getPlayerSymbol = () => {
@@ -70,7 +69,7 @@ const TicTacToe = () => {
         socket.on("ticTacToeGameEnded", (result) => {
             console.log("Juego terminado:", result);
             setGameEnded(true);
-            
+
             if (result.result === 'draw') {
                 setIsDraw(true);
                 setWinner(null);
@@ -121,11 +120,11 @@ const TicTacToe = () => {
             position: position,
             symbol: playerSymbol
         });
-    };    const handleRestart = () => {
+    }; const handleRestart = () => {
         socket.emit("restart_game", {
             roomCode: roomCode.trim().toLowerCase()
         });
-    };if (!players || players.length < 2) {
+    }; if (!players || players.length < 2) {
         return (
             <Layout variant="gaming">
                 <WaitingRoom
@@ -140,8 +139,48 @@ const TicTacToe = () => {
         );
     }    return (
         <Layout variant="gaming">
+            {/* Botón flotante para abrir modal de controles */}
+            <button 
+                className="controls-modal-trigger"
+                onClick={() => setShowControlsModal(true)}
+                title="Abrir controles"
+            >
+                ⚙️
+            </button>
+
             <div className="tic-tac-toe-game">
-                <GameInfo
+                {!gameEnded && (
+                    <div className="turn-indicator">
+                        <TurnIndicator
+                            isMyTurn={isMyTurn}
+                            currentPlayerName={players[turnIndex]?.name}
+                            currentPlayer={playerName}
+                            playerSymbol={getPlayerSymbol()}
+                            gameType="tic-tac-toe"
+                            variant="glass"
+                        />
+                    </div>
+                )}
+
+                <div className="game-board">
+                    <GameBoard
+                        board={board}
+                        onCellClick={handleCellClick}
+                        isMyTurn={isMyTurn}
+                        gameEnded={gameEnded}
+                        variant="glass"
+                    />
+                </div>
+            </div>
+
+            {/* Modal con todos los controles */}
+            <Modal
+                isOpen={showControlsModal}
+                onClose={() => setShowControlsModal(false)}
+                title="🎮 Controles del Juego"
+                variant="glass"
+            >
+                <GameControls
                     gameTitle="3 en Línea"
                     gameIcon="❌⚪"
                     roomCode={roomCode}
@@ -150,10 +189,6 @@ const TicTacToe = () => {
                     turnIndex={turnIndex}
                     gameType="tic-tac-toe"
                     gameFinished={gameEnded}
-                    variant="glass"
-                />
-
-                <VoiceControls
                     micEnabled={micEnabled}
                     audioEnabled={audioEnabled}
                     toggleMic={toggleMic}
@@ -162,59 +197,21 @@ const TicTacToe = () => {
                     connectionState={connectionState}
                     forceEnableControls={forceEnableControls}
                     reconnectVoice={reconnectVoice}
-                    variant="glass"
-                />
-
-                {!gameEnded && (
-                    <TurnIndicator
-                        isMyTurn={isMyTurn}
-                        currentPlayerName={players[turnIndex]?.name}
-                        currentPlayer={playerName}
-                        playerSymbol={getPlayerSymbol()}
-                        gameType="tic-tac-toe"
-                        variant="glass"
-                    />
-                )}
-
-                <GameBoard
-                    board={board}
-                    onCellClick={handleCellClick}
-                    isMyTurn={isMyTurn}
-                    gameEnded={gameEnded}
-                    variant="glass"
-                />
-
-                <GameStatus
                     gameEnded={gameEnded}
                     winner={winner}
                     isDraw={isDraw}
-                    currentPlayer={playerName}
                     onRestart={handleRestart}
-                    gameType="tic-tac-toe"
-                    players={players}
-                    variant="glass"
-                />
-
-                <DebugPanel
-                    players={players}
-                    turnIndex={turnIndex}
-                    currentPlayer={playerName}
                     isMyTurn={isMyTurn}
-                    gameEnded={gameEnded}
-                    connectionState={connectionState}
-                    isConnecting={isConnecting}
-                    micEnabled={micEnabled}
-                    audioEnabled={audioEnabled}
                     customData={{
                         'Board': board.join(','),
                         'Winner': winner,
                         'Is Draw': isDraw
                     }}
-                    show={showDebug}
-                    onToggle={() => setShowDebug(!showDebug)}
+                    showDebug={showDebug}
+                    onToggleDebug={() => setShowDebug(!showDebug)}
                     variant="glass"
                 />
-            </div>
+            </Modal>
         </Layout>
     );
 };

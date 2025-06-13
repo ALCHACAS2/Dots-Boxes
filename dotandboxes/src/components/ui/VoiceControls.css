@@ -1,232 +1,284 @@
 /* VoiceControls Component Styles */
 .voice-controls-card {
-  margin: 1.5rem 0;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 1.5rem 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .voice-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .voice-title {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #2d3748;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #2d3748;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .connection-status {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  border-radius: 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
 }
 
 .status--success {
-  background: rgba(16, 185, 129, 0.1);
-  color: #047857;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.1);
+    color: #047857;
+    border: 1px solid rgba(16, 185, 129, 0.3);
 }
 
 .status--error {
-  background: rgba(239, 68, 68, 0.1);
-  color: #b91c1c;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 
 .status--warning {
-  background: rgba(245, 158, 11, 0.1);
-  color: #92400e;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.1);
+    color: #92400e;
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .status--info {
-  background: rgba(59, 130, 246, 0.1);
-  color: #1e40af;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+    background: rgba(59, 130, 246, 0.1);
+    color: #1e40af;
+    border: 1px solid rgba(59, 130, 246, 0.3);
 }
 
 .status-icon {
-  font-size: 1rem;
-  animation: statusPulse 2s infinite;
+    font-size: 1rem;
+    animation: statusPulse 2s infinite;
 }
 
 @keyframes statusPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
 }
 
 .status-indicators {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .mic-indicator,
 .audio-indicator {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  border-radius: 0.75rem;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .mic-indicator.active,
 .audio-indicator.active {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: rgba(16, 185, 129, 0.3);
-  color: #047857;
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #047857;
 }
 
 .mic-indicator.inactive,
 .audio-indicator.inactive {
-  background: rgba(107, 114, 128, 0.1);
-  border-color: rgba(107, 114, 128, 0.2);
-  color: #6b7280;
+    background: rgba(107, 114, 128, 0.1);
+    border-color: rgba(107, 114, 128, 0.2);
+    color: #6b7280;
 }
 
 .indicator-icon {
-  font-size: 1.25rem;
-  flex-shrink: 0;
+    font-size: 1.25rem;
+    flex-shrink: 0;
 }
 
 .indicator-text {
-  font-size: 0.875rem;
-  font-weight: 500;
-  flex: 1;
+    font-size: 0.875rem;
+    font-weight: 500;
+    flex: 1;
 }
 
 .voice-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
 .reconnect-section,
 .emergency-section {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(203, 213, 224, 0.5);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(203, 213, 224, 0.5);
 }
 
 .mic-info {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .connecting-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: rgba(59, 130, 246, 0.05);
-  border-radius: 0.75rem;
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  margin-top: 1rem;
-  color: #1e40af;
-  font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-radius: 0.75rem;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    margin-top: 1rem;
+    color: #1e40af;
+    font-weight: 500;
 }
 
 .loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid rgba(59, 130, 246, 0.3);
-  border-top: 2px solid #3b82f6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(59, 130, 246, 0.3);
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .voice-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+    .voice-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 
-  .connection-status {
-    align-self: stretch;
-    justify-content: center;
-  }
+    .connection-status {
+        align-self: stretch;
+        justify-content: center;
+    }
 
-  .status-indicators {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
+    .status-indicators {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
 
-  .voice-buttons {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
+    .voice-buttons {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
 
-  .voice-title {
-    font-size: 1rem;
-  }
+    .voice-title {
+        font-size: 1rem;
+    }
+}
+
+/* Responsive Layout for VoiceControls in Grid */
+@media (min-width: 1024px) {
+    .voice-controls-card {
+        margin: 0;
+        height: fit-content;
+    }
+    
+    .voice-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .voice-title {
+        font-size: 1rem;
+    }
+    
+    .connection-status {
+        align-self: stretch;
+        justify-content: center;
+    }
+    
+    .voice-controls {
+        gap: 0.75rem;
+    }
+    
+    .voice-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .voice-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .voice-buttons {
+        flex-direction: row;
+        gap: 1rem;
+    }
 }
 
 /* Dark theme support */
 @media (prefers-color-scheme: dark) {
-  .voice-controls-card {
-    background: rgba(26, 32, 44, 0.95);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
+    .voice-controls-card {
+        background: rgba(26, 32, 44, 0.95);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
 
-  .voice-title {
-    color: #e2e8f0;
-  }
+    .voice-title {
+        color: #e2e8f0;
+    }
 
-  .mic-indicator.inactive,
-  .audio-indicator.inactive {
-    background: rgba(74, 85, 104, 0.3);
-    border-color: rgba(74, 85, 104, 0.4);
-    color: #a0aec0;
-  }
+    .mic-indicator.inactive,
+    .audio-indicator.inactive {
+        background: rgba(74, 85, 104, 0.3);
+        border-color: rgba(74, 85, 104, 0.4);
+        color: #a0aec0;
+    }
 
-  .connecting-indicator {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #93c5fd;
-  }
+    .connecting-indicator {
+        background: rgba(59, 130, 246, 0.2);
+        border-color: rgba(59, 130, 246, 0.3);
+        color: #93c5fd;
+    }
 }
 
 /* Animation for active states */
 .mic-indicator.active .indicator-icon,
 .audio-indicator.active .indicator-icon {
-  animation: activeIndicator 1.5s ease-in-out infinite;
+    animation: activeIndicator 1.5s ease-in-out infinite;
 }
 
 @keyframes activeIndicator {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
 }

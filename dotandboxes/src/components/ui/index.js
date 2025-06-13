@@ -9,6 +9,7 @@ export { default as GameGrid } from './GameGrid';
 export { default as PlayerList } from './PlayerList';
 export { default as Alert } from './Alert';
 export { default as Spinner } from './Spinner';
+export { default as Modal } from './Modal';
 
 // Game-specific components
 export { default as GameInfo } from './GameInfo';
@@ -20,3 +21,4 @@ export { default as ScoreBoard } from './ScoreBoard';
 export { default as GameBoard } from './GameBoard';
 export { default as DotsBoxBoard } from './DotsBoxBoard';
 export { default as DebugPanel } from './DebugPanel';
+export { default as GameControls } from './GameControls';

@@ -1,185 +1,339 @@
 .game-board-card {
-  margin: 1.5rem 0;
-  padding: 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  backdrop-filter: blur(15px);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .board-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    padding: 1rem;
+    width: 100%;
 }
 
 /* Tic Tac Toe Board Styles */
 .tic-tac-toe-board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  gap: 8px;
-  width: 300px;
-  height: 300px;
-  padding: 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-  border-radius: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 6px;
+    width: 320px;
+    height: 320px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        inset 0 4px 15px rgba(0, 0, 0, 0.1),
+        0 8px 32px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    
+    /* Asegurar centrado perfecto */
+    place-self: center;
+    justify-self: center;
+    align-self: center;
 }
 
+/* Mejoras para las celdas compactas */
 .cell {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    
+    /* Mejor espaciado interno */
+    min-height: 80px;
+    min-width: 80px;
 }
 
 .cell:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  border-color: rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.cell:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .cell.filled {
-  cursor: default;
-  transform: none;
+    cursor: default;
+    transform: none;
 }
 
 .cell.filled:hover {
-  transform: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .cell.x {
-  background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.05));
-  border-color: rgba(244, 67, 54, 0.3);
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(255, 87, 34, 0.05));
+    border-color: rgba(244, 67, 54, 0.3);
 }
 
 .cell.o {
-  background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(3, 169, 244, 0.05));
-  border-color: rgba(33, 150, 243, 0.3);
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(3, 169, 244, 0.05));
+    border-color: rgba(33, 150, 243, 0.3);
 }
 
 .symbol {
-  animation: symbolAppear 0.4s ease-out;
-  position: relative;
-  z-index: 2;
+    animation: symbolAppear 0.4s ease-out;
+    position: relative;
+    z-index: 2;
 }
 
 .cell.x .symbol {
-  color: #e53e3e;
-  text-shadow: 0 2px 10px rgba(229, 62, 62, 0.3);
+    color: #e53e3e;
+    text-shadow: 0 2px 10px rgba(229, 62, 62, 0.3);
 }
 
 .cell.o .symbol {
-  color: #3182ce;
-  text-shadow: 0 2px 10px rgba(49, 130, 206, 0.3);
+    color: #3182ce;
+    text-shadow: 0 2px 10px rgba(49, 130, 206, 0.3);
 }
 
 @keyframes symbolAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0) rotate(180deg);
-  }
-  50% {
-    transform: scale(1.2) rotate(90deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(180deg);
+    }
+
+    50% {
+        transform: scale(1.2) rotate(90deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
 }
 
 /* Efecto de partículas cuando se hace un movimiento */
 .cell.filled::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-  opacity: 0;
-  animation: cellFlash 0.6s ease-out;
-  z-index: 1;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    animation: cellFlash 0.6s ease-out;
+    z-index: 1;
 }
 
 @keyframes cellFlash {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .tic-tac-toe-board {
-    width: 280px;
-    height: 280px;
-    padding: 15px;
-    gap: 6px;
-  }
-  
-  .cell {
-    font-size: 2.5rem;
-    border-radius: 12px;
-  }
+    .tic-tac-toe-board {
+        width: 280px;
+        height: 280px;
+        padding: 15px;
+        gap: 6px;
+    }
+
+    .cell {
+        font-size: 2.5rem;
+        border-radius: 12px;
+        
+        /* Responsive cell sizing for compact design */
+        min-height: 60px;
+        min-width: 60px;
+    }
 }
 
 @media (max-width: 480px) {
-  .tic-tac-toe-board {
-    width: 250px;
-    height: 250px;
-    padding: 10px;
-    gap: 4px;
-  }
-  
-  .cell {
-    font-size: 2rem;
-    border-radius: 10px;
-  }
-  
-  .game-board-card {
-    padding: 1rem;
-    margin: 1rem 0;
-  }
+    .tic-tac-toe-board {
+        width: 250px;
+        height: 250px;
+        padding: 10px;
+        gap: 4px;
+    }
+
+    .cell {
+        font-size: 2rem;
+        border-radius: 10px;
+    }
+
+    .game-board-card {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+}
+
+/* Responsive GameBoard Layout */
+@media (min-width: 1024px) {
+    .game-board-card {
+        margin: 0;
+        padding: 1.5rem;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .board-container {
+        flex: 1;
+        min-height: 0;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+    
+    .tic-tac-toe-board {
+        width: min(400px, 80vw);
+        height: min(400px, 80vw);
+        max-width: 90vw;
+        max-height: 60vh;
+        padding: 20px;
+        gap: 8px;
+    }
+    
+    .cell {
+        font-size: clamp(2rem, 4vw, 3rem);
+        
+        /* Responsive cell sizing for compact design */
+        min-height: 90px;
+        min-width: 90px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .game-board-card {
+        padding: 2rem;
+    }
+    
+    .board-container {
+        padding: 1.5rem;
+    }
+    
+    .tic-tac-toe-board {
+        width: min(450px, 70vw);
+        height: min(450px, 70vw);
+        max-height: 70vh;
+        padding: 25px;
+        gap: 10px;
+    }
+    
+    .cell {
+        font-size: clamp(2.5rem, 3vw, 3.5rem);
+    }
+}
+
+/* Ultra-wide desktop optimization */
+@media (min-width: 1400px) {
+    .tic-tac-toe-board {
+        width: min(500px, 60vw);
+        height: min(500px, 60vw);
+        max-height: 75vh;
+    }
+}
+
+/* Mobile GameBoard adjustments */
+@media (max-width: 767px) {
+    .game-board-card {
+        margin: 1rem 0;
+        padding: 1rem;
+    }
+    
+    .board-container {
+        min-height: 300px;
+        padding: 0.5rem;
+    }
+    
+    .tic-tac-toe-board {
+        width: min(280px, 85vw);
+        height: min(280px, 85vw);
+        padding: 10px;
+        gap: 4px;
+    }
+    
+    .cell {
+        font-size: 2rem;
+        border-radius: 10px;
+        
+        /* Responsive cell sizing for compact design */
+        min-height: 60px;
+        min-width: 60px;
+    }
+}
+
+/* Tablet GameBoard adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .game-board-card {
+        margin: 1.5rem 0;
+        padding: 1.5rem;
+    }
+    
+    .board-container {
+        padding: 1rem;
+    }
+    
+    .tic-tac-toe-board {
+        width: min(350px, 75vw);
+        height: min(350px, 75vw);
+        padding: 15px;
+        gap: 6px;
+    }
+    
+    .cell {
+        font-size: 2.5rem;
+        
+        /* Responsive cell sizing for compact design */
+        min-height: 70px;
+        min-width: 70px;
+    }
 }
 
 /* Estados especiales */
 .cell:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }
 
 .cell.winning-cell {
-  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.1));
-  border-color: rgba(76, 175, 80, 0.5);
-  animation: winningPulse 1s ease-in-out infinite alternate;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.1));
+    border-color: rgba(76, 175, 80, 0.5);
+    animation: winningPulse 1s ease-in-out infinite alternate;
 }
 
 @keyframes winningPulse {
-  0% {
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-  }
-  100% {
-    box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6);
-  }
+    0% {
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 8px 30px rgba(76, 175, 80, 0.6);
+    }
 }
