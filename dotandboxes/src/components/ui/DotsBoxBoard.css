@@ -82,26 +82,26 @@
 /* Líneas horizontales */
 .dots-box-board .h-line {
     width: var(--element-size);
-    height: calc(var(--element-size) * 0.08);
-    min-height: 2px;
-    max-height: 5px;
+    height: calc(var(--element-size) * 0.15);
+    min-height: 3px;
+    max-height: 10px;
     background: rgba(200, 200, 200, 0.6);
     transition: all 0.3s ease;
     position: relative;
-    border-radius: 2px;
+    border-radius: 4px;
     flex-shrink: 0;
 }
 
 /* Líneas verticales */
 .dots-box-board .v-line {
-    width: calc(var(--element-size) * 0.08);
+    width: calc(var(--element-size) * 0.15);
     height: var(--element-size);
-    min-width: 2px;
-    max-width: 5px;
+    min-width: 3px;
+    max-width: 10px;
     background: rgba(200, 200, 200, 0.6);
     transition: all 0.3s ease;
     position: relative;
-    border-radius: 2px;
+    border-radius: 4px;
     flex-shrink: 0;
 }
 

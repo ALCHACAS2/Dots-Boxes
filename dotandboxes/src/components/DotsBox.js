@@ -42,7 +42,7 @@ const DotsBox = () => {
     const [horizontalLines, setHorizontalLines] = useState([]);
     const [verticalLines, setVerticalLines] = useState([]);
     const [boxes, setBoxes] = useState([]);
-    const [turnIndex, setTurnIndex] = useState(0);    const [scores, setScores] = useState({});
+    const [turnIndex, setTurnIndex] = useState(0); const [scores, setScores] = useState({});
     const [showDebug, setShowDebug] = useState(false);
     const [showControlsModal, setShowControlsModal] = useState(false);
 
@@ -252,10 +252,10 @@ const DotsBox = () => {
     const totalBoxes = GRID_SIZE * GRID_SIZE;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
-    const currentPlayerName = players[turnIndex]?.name;    return (
+    const currentPlayerName = players[turnIndex]?.name; return (
         <Layout variant="gaming">
             {/* Botón flotante para abrir modal de controles */}
-            <button 
+            <button
                 className="controls-modal-trigger"
                 onClick={() => setShowControlsModal(true)}
                 title="Abrir controles"

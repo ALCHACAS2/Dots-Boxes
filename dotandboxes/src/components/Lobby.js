@@ -137,24 +137,24 @@ function Lobby() {
   const getGameTypeLabel = (type) => {
     const gameOption = gameTypeOptions.find(option => option.value === type);
     return gameOption ? gameOption.label : type;
-  };
-  // Lista de juegos para el grid 3x3
+  };  // Lista de juegos para el grid 3x3
   const gridGames = [
     { value: 'dots-boxes', label: 'Dots & Boxes', icon: '⚪' },
     { value: 'tic-tac-toe', label: '3 en Línea', icon: '❌' },
+    { value: 'test-dotsbox', label: 'Pruebas D&B', icon: '🔧' },
     { value: 'coming-soon-1', label: 'Próximamente', icon: '🎲' },
     { value: 'coming-soon-2', label: 'Próximamente', icon: '🧩' },
     { value: 'coming-soon-3', label: 'Próximamente', icon: '🕹️' },
-    { value: 'coming-soon-4', label: 'Próximamente', icon: '🎮' },
+    { value: 'coming-soon-4', label: 'Próximamente', icon: '�' },
     { value: 'coming-soon-5', label: 'Próximamente', icon: '🃏' },
     { value: 'coming-soon-6', label: 'Próximamente', icon: '🧠' },
-    { value: 'coming-soon-7', label: 'Próximamente', icon: '🏆' },
   ];
-
   const handleGameSelect = (game) => {
     if (game.value === 'dots-boxes' || game.value === 'tic-tac-toe') {
       setSelectedGame(game.value);
       setGameType(game.value);
+    } else if (game.value === 'test-dotsbox') {
+      navigate('/test-dotsbox');
     }
   };
 
