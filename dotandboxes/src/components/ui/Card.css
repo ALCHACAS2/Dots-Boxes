@@ -1,0 +1,130 @@
+/* Card Component Styles */
+:root {
+  --card-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --card-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --card-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --card-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.card {
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Card Variants */
+.card--default {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: var(--card-shadow-lg);
+}
+
+.card--primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: var(--card-shadow-xl);
+}
+
+.card--secondary {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  box-shadow: var(--card-shadow-xl);
+}
+
+.card--dark {
+  background: rgba(26, 32, 44, 0.95);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--card-shadow-2xl);
+}
+
+.card--transparent {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--card-shadow-lg);
+}
+
+/* Card Sizes */
+.card--small {
+  padding: 1rem;
+  max-width: 300px;
+}
+
+.card--medium {
+  padding: 2rem;
+  max-width: 500px;
+  width: 100%;
+}
+
+.card--large {
+  padding: 2.5rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.card--extra-large {
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Glass Effect */
+.card--glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card--glass::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    rgba(255, 255, 255, 0.05) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Hover Effects */
+.card--hover:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--card-shadow-2xl), 0 0 40px rgba(102, 126, 234, 0.2);
+}
+
+.card--primary.card--hover:hover {
+  box-shadow: var(--card-shadow-2xl), 0 0 40px rgba(102, 126, 234, 0.4);
+}
+
+.card--secondary.card--hover:hover {
+  box-shadow: var(--card-shadow-2xl), 0 0 40px rgba(240, 147, 251, 0.4);
+}
+
+.card--dark.card--hover:hover {
+  box-shadow: var(--card-shadow-2xl), 0 0 40px rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .card--medium,
+  .card--large,
+  .card--extra-large {
+    padding: 1.5rem;
+    margin: 0 1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .card--large {
+    padding: 3rem;
+  }
+  
+  .card--extra-large {
+    padding: 3rem 2.5rem;
+  }
+}

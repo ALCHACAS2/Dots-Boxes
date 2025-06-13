@@ -1,0 +1,179 @@
+/* Alert Component Styles */
+.alert {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid transparent;
+  backdrop-filter: blur(10px);
+  animation: slideInDown 0.3s ease-out;
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.alert__content {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.alert__icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.alert__body {
+  flex: 1;
+}
+
+.alert__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.alert__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.alert__dismiss {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  padding: 0;
+  margin-left: 1rem;
+  flex-shrink: 0;
+}
+
+.alert__dismiss:hover {
+  opacity: 1;
+}
+
+/* Alert Variants */
+.alert--info {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+  color: #1e40af;
+}
+
+.alert--info .alert__dismiss {
+  color: #1e40af;
+}
+
+.alert--success {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #047857;
+}
+
+.alert--success .alert__dismiss {
+  color: #047857;
+}
+
+.alert--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #92400e;
+}
+
+.alert--warning .alert__dismiss {
+  color: #92400e;
+}
+
+.alert--error {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #b91c1c;
+}
+
+.alert--error .alert__dismiss {
+  color: #b91c1c;
+}
+
+/* Alert Sizes */
+.alert--small {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.alert--small .alert__icon {
+  font-size: 1rem;
+}
+
+.alert--small .alert__title {
+  font-size: 0.875rem;
+}
+
+.alert--small .alert__text {
+  font-size: 0.8125rem;
+}
+
+.alert--medium {
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+.alert--large {
+  padding: 1.25rem;
+  border-radius: 1rem;
+}
+
+.alert--large .alert__icon {
+  font-size: 1.5rem;
+}
+
+.alert--large .alert__title {
+  font-size: 1.125rem;
+}
+
+.alert--large .alert__text {
+  font-size: 1rem;
+}
+
+/* Dismissible modifier */
+.alert--dismissible {
+  padding-right: 2.5rem;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .alert--info {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+  
+  .alert--success {
+    background: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+  }
+  
+  .alert--warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+  }
+  
+  .alert--error {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+  }
+}

@@ -1,0 +1,218 @@
+/* Select Component Styles */
+.select-group {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.select-group--full-width {
+  width: 100%;
+}
+
+.select-group--small {
+  margin-bottom: 0.75rem;
+}
+
+.select-group--large {
+  margin-bottom: 1.5rem;
+}
+
+.select__label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+}
+
+.select__wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.select__field {
+  width: 100%;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #1f2937;
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select__field--with-icon {
+  padding-left: 3rem;
+}
+
+.select__field:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background-color: #ffffff;
+}
+
+.select__field:hover:not(:focus) {
+  border-color: #d1d5db;
+}
+
+.select__icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 1.25rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.select__arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  font-size: 0.75rem;
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.select__field:focus + .select__arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.select__helper {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.25;
+}
+
+.select__error {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #dc2626;
+  line-height: 1.25;
+  font-weight: 500;
+}
+
+/* Select Variants */
+.select-group--default .select__field {
+  border-color: #e5e7eb;
+  background-color: #ffffff;
+}
+
+.select-group--glass .select__field {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.select-group--glass .select__field:focus {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.select-group--dark .select__field {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #ffffff;
+}
+
+.select-group--dark .select__field:focus {
+  border-color: #667eea;
+  background-color: #374151;
+}
+
+.select-group--dark .select__label {
+  color: #e5e7eb;
+}
+
+.select-group--dark .select__icon,
+.select-group--dark .select__arrow {
+  color: #9ca3af;
+}
+
+/* Select Sizes */
+.select-group--small .select__field {
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+}
+
+.select-group--small .select__field--with-icon {
+  padding-left: 2.5rem;
+}
+
+.select-group--small .select__icon {
+  left: 0.75rem;
+  font-size: 1rem;
+}
+
+.select-group--small .select__arrow {
+  right: 0.75rem;
+}
+
+.select-group--large .select__field {
+  padding: 1rem 3rem 1rem 1.25rem;
+  font-size: 1.125rem;
+  border-radius: 1rem;
+}
+
+.select-group--large .select__field--with-icon {
+  padding-left: 3.5rem;
+}
+
+.select-group--large .select__icon {
+  left: 1.25rem;
+  font-size: 1.5rem;
+}
+
+.select-group--large .select__arrow {
+  right: 1.25rem;
+}
+
+/* Error State */
+.select-group--error .select__field {
+  border-color: #dc2626;
+  background-color: #fef2f2;
+}
+
+.select-group--error .select__field:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+}
+
+.select-group--error .select__icon,
+.select-group--error .select__arrow {
+  color: #dc2626;
+}
+
+/* Disabled State */
+.select__field:disabled {
+  background-color: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Option Styles */
+.select__field option {
+  background-color: #ffffff;
+  color: #1f2937;
+  padding: 0.5rem;
+}
+
+.select-group--dark .select__field option {
+  background-color: #374151;
+  color: #ffffff;
+}

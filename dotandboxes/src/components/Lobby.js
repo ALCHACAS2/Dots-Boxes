@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
+import { 
+  Layout, 
+  Card, 
+  Button, 
+  Input, 
+  Select, 
+  Header, 
+  GameGrid, 
+  PlayerList,
+  Alert
+} from "./ui";
 import "./Lobby.css";
+import "./LobbyExtras.css";
 
 function Lobby() {
   const [playerName, setPlayerName] = useState("");
@@ -10,10 +22,10 @@ function Lobby() {
   const [gameType, setGameType] = useState('dots-boxes');
   const [players, setPlayers] = useState([]);
   const [roomGridSize, setRoomGridSize] = useState(null);
-  const [roomGameType, setRoomGameType] = useState(null);
-  const [isWaitingForPlayers, setIsWaitingForPlayers] = useState(false);
+  const [roomGameType, setRoomGameType] = useState(null);  const [isWaitingForPlayers, setIsWaitingForPlayers] = useState(false);
   const [customGridSize, setCustomGridSize] = useState("");
   const [selectedGame, setSelectedGame] = useState(null);
+  const [alert, setAlert] = useState(null);
 
   const navigate = useNavigate();
   const socket = useSocket();
@@ -52,10 +64,12 @@ function Lobby() {
           gameType: data.gameType
         },
       });
-    });
-
-    socket.on("roomFull", () => {
-      alert("La sala está llena o el nombre ya está en uso.");
+    });    socket.on("roomFull", () => {
+      setAlert({
+        type: 'error',
+        title: 'Error al unirse',
+        message: 'La sala está llena o el nombre ya está en uso.'
+      });
       setIsWaitingForPlayers(false);
     });
 
@@ -65,19 +79,26 @@ function Lobby() {
       socket.off("playersUpdate");
     };
   }, [socket, navigate, playerName, roomCode]);
-
   const handleJoin = () => {
     // Validación para tamaño personalizado en Dots & Boxes
     if (gameType === 'dots-boxes' && gridSize === "custom") {
       const size = parseInt(customGridSize);
       if (isNaN(size) || size < 2 || size > 10) {
-        alert("El tamaño personalizado debe ser un número entre 2 y 10.");
+        setAlert({
+          type: 'warning',
+          title: 'Tamaño inválido',
+          message: 'El tamaño personalizado debe ser un número entre 2 y 10.'
+        });
         return;
       }
     }
 
     if (!playerName.trim() || !roomCode.trim()) {
-      alert("Por favor, completa todos los campos.");
+      setAlert({
+        type: 'warning',
+        title: 'Campos incompletos',
+        message: 'Por favor, completa todos los campos.'
+      });
       return;
     }
 
@@ -92,12 +113,12 @@ function Lobby() {
       gameType: gameType
     });
   };
-
   const handleBack = () => {
     setIsWaitingForPlayers(false);
     setPlayers([]);
     setRoomGridSize(null);
     setRoomGameType(null);
+    setAlert(null);
   };
 
   const gameTypeOptions = [
@@ -117,7 +138,6 @@ function Lobby() {
     const gameOption = gameTypeOptions.find(option => option.value === type);
     return gameOption ? gameOption.label : type;
   };
-
   // Lista de juegos para el grid 3x3
   const gridGames = [
     { value: 'dots-boxes', label: 'Dots & Boxes', icon: '⚪' },
@@ -131,101 +151,98 @@ function Lobby() {
     { value: 'coming-soon-7', label: 'Próximamente', icon: '🏆' },
   ];
 
+  const handleGameSelect = (game) => {
+    if (game.value === 'dots-boxes' || game.value === 'tic-tac-toe') {
+      setSelectedGame(game.value);
+      setGameType(game.value);
+    }
+  };
+
   // Si no se ha seleccionado un juego, mostrar el grid 3x3
   if (!selectedGame) {
     return (
-      <div className="lobby-container">
-        <div className="lobby-card">
-          <h1 className="lobby-title">🎮 Elige un juego</h1>
-          <div className="game-grid-3x3">
-            {gridGames.map((game, idx) => (
-              <div
-                key={game.value + idx}
-                className={`game-grid-cell${game.value === 'dots-boxes' || game.value === 'tic-tac-toe' ? ' selectable' : ' disabled'}`}
-                style={{
-                  cursor: game.value === 'dots-boxes' || game.value === 'tic-tac-toe' ? 'pointer' : 'not-allowed',
-                  opacity: game.value === 'dots-boxes' || game.value === 'tic-tac-toe' ? 1 : 0.5,
-                  border: '1px solid #ccc',
-                  borderRadius: '10px',
-                  margin: '8px',
-                  padding: '24px',
-                  fontSize: '1.5rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: '#f9f9f9',
-                  minWidth: '100px',
-                  minHeight: '100px',
-                  boxShadow: '0 2px 8px #0001',
-                }}
-                onClick={() => {
-                  if (game.value === 'dots-boxes' || game.value === 'tic-tac-toe') {
-                    setSelectedGame(game.value);
-                    setGameType(game.value);
-                  }
-                }}
-              >
-                <span style={{ fontSize: '2.5rem' }}>{game.icon}</span>
-                <span style={{ marginTop: '10px', fontWeight: 'bold' }}>{game.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <Layout variant="gaming">
+        <Card size="extra-large" variant="glass">
+          <Header 
+            title="Elige un juego" 
+            icon="🎮"
+            variant="gaming"
+            size="large"
+          />
+          <GameGrid
+            games={gridGames}
+            onGameSelect={handleGameSelect}
+            variant="gaming"
+            size="medium"
+            columns={3}
+          />
+        </Card>
+      </Layout>
     );
   }
-
   return (
-    <div className="lobby-container">
-      <div className="lobby-card">
-        <h1 className="lobby-title">🎮 Juegos Multijugador</h1>
-        <button
-          className="back-button"
-          style={{ marginBottom: 16, background: '#eee', color: '#333', border: 'none', borderRadius: 6, padding: '8px 16px', cursor: 'pointer', fontWeight: 'bold' }}
-          onClick={() => {
-            setSelectedGame(null);
-            setRoomGameType(null);
-            setRoomGridSize(null);
-            setGridSize(3);
-            setCustomGridSize("");
-          }}
+    <Layout variant="default">
+      <Card size="large" variant="glass">        <Header 
+          title="Juegos Multijugador" 
+          icon="🎮"
+          variant="gradient"
+          size="large"
         >
-          ← Ir atrás
-        </button>
-        {!isWaitingForPlayers ? (
-          <>
-            <div className="form-group">
-              <label htmlFor="playerName">Tu nombre:</label>
-              <input
-                id="playerName"
-                type="text"
-                className="input-field"
-                placeholder="Ingresa tu nombre"
-                value={playerName}
-                onChange={(e) => setPlayerName(e.target.value)}
-                maxLength={20}
-              />
-            </div>
+          <Button
+            variant="minimal"
+            size="small"
+            onClick={() => {
+              setSelectedGame(null);
+              setRoomGameType(null);
+              setRoomGridSize(null);
+              setGridSize(3);
+              setCustomGridSize("");
+              setAlert(null);
+            }}
+            icon="←"
+          >
+            Ir atrás
+          </Button>
+        </Header>
 
-            <div className="form-group">
-              <label htmlFor="roomCode">Código de sala:</label>
-              <input
-                id="roomCode"
-                type="text"
-                className="input-field"
-                placeholder="Ingresa el código de sala"
-                value={roomCode}
-                onChange={(e) => setRoomCode(e.target.value)}
-                maxLength={10}
-              />
-            </div>            {/* Selector de tamaño solo para Dots & Boxes */}
+        {alert && (
+          <Alert
+            variant={alert.type}
+            title={alert.title}
+            dismissible
+            onDismiss={() => setAlert(null)}
+          >
+            {alert.message}
+          </Alert>
+        )}
+
+        {!isWaitingForPlayers ? (
+          <div className="lobby-form">
+            <Input
+              label="Tu nombre:"
+              placeholder="Ingresa tu nombre"
+              value={playerName}
+              onChange={(e) => setPlayerName(e.target.value)}
+              maxLength={20}
+              variant="glass"
+              icon="👤"
+            />
+
+            <Input
+              label="Código de sala:"
+              placeholder="Ingresa el código de sala"
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value)}
+              maxLength={10}
+              variant="glass"
+              icon="🔑"
+            />
+
+            {/* Selector de tamaño solo para Dots & Boxes */}
             {(roomGameType === null ? gameType : roomGameType) === 'dots-boxes' && (
-              <div className="form-group">
-                <label htmlFor="gridSize">Tamaño del tablero:</label>
-                <select
-                  id="gridSize"
-                  className="select-field"
+              <div className="game-settings">
+                <Select
+                  label="Tamaño del tablero:"
                   value={roomGridSize !== null ? roomGridSize : gridSize}
                   onChange={(e) => {
                     const value = e.target.value;
@@ -237,95 +254,97 @@ function Lobby() {
                     }
                   }}
                   disabled={roomGridSize !== null}
+                  variant="glass"
+                  icon="📐"
                 >
                   {gridSizeOptions.map(option => (
                     <option key={option.value} value={option.value}>
                       {option.label}
                     </option>
                   ))}
-                </select>
+                </Select>
 
                 {gridSize === "custom" && roomGridSize === null && (
-                  <input
+                  <Input
                     type="number"
                     min="2"
                     max="10"
-                    className="input-field"
                     placeholder="Tamaño personalizado (2 a 10)"
                     value={customGridSize}
                     onChange={(e) => setCustomGridSize(e.target.value)}
+                    variant="glass"
+                    helper="Introduce un número entre 2 y 10"
                   />
                 )}
 
-                {roomGridSize !== null && (
-                  <div className="grid-size-info">
-                    El tamaño del tablero ya fue establecido: {roomGridSize}x{roomGridSize}
-                  </div>
-                )}
-                {roomGridSize === null && (
-                  <div className="grid-size-info">
-                    Como primer jugador, puedes elegir el tamaño del tablero
-                  </div>
-                )}
-              </div>
-            )}            {/* Descripción solo para Tic Tac Toe */}
-            {(roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe' && (
-              <div className="form-group">
-                <div className="game-description">
-                  <p>🎯 <strong>3 en Línea (Tic-Tac-Toe)</strong></p>
-                  <p>¡Consigue tres en línea para ganar! Tablero clásico 3x3.</p>
-                </div>
-              </div>
-            )}
-
-            <button
-              className="join-button"
-              onClick={handleJoin}
-              disabled={!playerName.trim() || !roomCode.trim()}
-            >
-              Unirse a la sala
-            </button>
-          </>
-        ) : (
-          <div className="players-section">
-            <h3>Sala: {roomCode}</h3>
-
-            <div className="game-info">
-              <p><strong>Juego:</strong> {getGameTypeLabel(roomGameType || gameType)}</p>
-              {(roomGameType || gameType) === 'dots-boxes' && (
-                <p><strong>Tamaño del tablero:</strong> {roomGridSize || gridSize}x{roomGridSize || gridSize}</p>
-              )}
-              <p><strong>Jugadores:</strong> {players.length}/2</p>
-            </div>
-
-            <div className="players-list">
-              {players.map((player, index) => (
-                <div key={index} className="player-item">
-                  <span className="player-name">{player.name}</span>
-                  {player.name === playerName && (
-                    <span className="you-badge">Tú</span>
+                <div className="grid-size-info">
+                  {roomGridSize !== null ? (
+                    <p>✅ El tamaño del tablero ya fue establecido: {roomGridSize}x{roomGridSize}</p>
+                  ) : (
+                    <p>🎯 Como primer jugador, puedes elegir el tamaño del tablero</p>
                   )}
                 </div>
-              ))}
-            </div>
-
-            {players.length < 2 && (
-              <div className="waiting-message">
-                Esperando a que se una otro jugador...
               </div>
             )}
 
-            <button
-              className="join-button"
+            {/* Descripción solo para Tic Tac Toe */}
+            {(roomGameType === null ? gameType : roomGameType) === 'tic-tac-toe' && (
+              <Card variant="transparent" size="small" className="game-description">
+                <p>🎯 <strong>3 en Línea (Tic-Tac-Toe)</strong></p>
+                <p>¡Consigue tres en línea para ganar! Tablero clásico 3x3.</p>
+              </Card>
+            )}
+
+            <Button
+              variant="primary"
+              size="large"
+              fullWidth
+              onClick={handleJoin}
+              disabled={!playerName.trim() || !roomCode.trim()}
+              loading={false}
+              icon="🚀"
+            >
+              Unirse a la sala
+            </Button>
+          </div>
+        ) : (
+          <div className="waiting-section">
+            <Header 
+              title={`Sala: ${roomCode}`}
+              subtitle={`${getGameTypeLabel(roomGameType || gameType)} - ${players.length}/2 jugadores`}
+              variant="primary"
+              size="medium"
+            />
+
+            {(roomGameType || gameType) === 'dots-boxes' && (
+              <Card variant="transparent" size="small" className="game-info">
+                <p><strong>📐 Tamaño del tablero:</strong> {roomGridSize || gridSize}x{roomGridSize || gridSize}</p>
+              </Card>
+            )}
+
+            <PlayerList
+              players={players}
+              currentPlayer={playerName}
+              maxPlayers={2}
+              variant="glass"
+              size="medium"
+              showWaiting={true}
+            />
+
+            <Button
+              variant="danger"
+              size="medium"
+              fullWidth
               onClick={handleBack}
-              style={{ marginTop: '15px', background: '#dc3545' }}
+              icon="👈"
+              style={{ marginTop: '1.5rem' }}
             >
               Salir de la sala
-            </button>
+            </Button>
           </div>
         )}
-      </div>
-    </div>
+      </Card>
+    </Layout>
   );
 }
 
