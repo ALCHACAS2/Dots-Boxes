@@ -1,0 +1,93 @@
+.turn-indicator {
+  margin: 1rem 0;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.turn-indicator.is-my-turn {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+  border: 2px solid rgba(76, 175, 80, 0.3);
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.2);
+}
+
+.turn-indicator.is-opponent-turn {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 193, 7, 0.1));
+  border: 2px solid rgba(255, 152, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
+}
+
+.turn-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  position: relative;
+}
+
+.turn-message.my-turn {
+  color: #4caf50;
+}
+
+.turn-message.opponent-turn {
+  color: #ff9800;
+}
+
+.turn-icon {
+  font-size: 1.5rem;
+  animation: pulse 2s infinite;
+}
+
+.turn-text {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: 0.5px;
+}
+
+/* Animación para el icono */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Efecto de brillo para el turno actual */
+.turn-indicator.is-my-turn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .turn-message {
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .turn-icon {
+    font-size: 1.25rem;
+  }
+}

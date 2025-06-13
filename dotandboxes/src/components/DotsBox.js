@@ -3,8 +3,20 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import { useVoiceChat } from "../hooks/useVoice";
+import { 
+  Layout, 
+  GameInfo, 
+  VoiceControls, 
+  GameStatus, 
+  WaitingRoom,
+  TurnIndicator,
+  ScoreBoard,
+  DotsBoxBoard,
+  DebugPanel
+} from "./ui";
 
 import "./DotsBox.css";
+import "./DotsBoxLayout.css";
 
 const DotsBox = () => {
     const location = useLocation();
@@ -29,13 +41,13 @@ const DotsBox = () => {
 
     console.log("Location state:", location.state);
     console.log("Players:", players);
-    console.log("Grid Size:", initialGridSize);
-
-    const [GRID_SIZE, setGridSize] = useState(initialGridSize);
+    console.log("Grid Size:", initialGridSize);    const [GRID_SIZE, setGridSize] = useState(initialGridSize);
     const [horizontalLines, setHorizontalLines] = useState([]);
     const [verticalLines, setVerticalLines] = useState([]);
-    const [boxes, setBoxes] = useState([]);    const [turnIndex, setTurnIndex] = useState(0);
+    const [boxes, setBoxes] = useState([]);
+    const [turnIndex, setTurnIndex] = useState(0);
     const [scores, setScores] = useState({});
+    const [showDebug, setShowDebug] = useState(false);
 
     // Funciones helper para manejo de jugadores
     const getPlayerNumber = (playerName) => {
@@ -47,9 +59,7 @@ const DotsBox = () => {
     const getCurrentPlayerNumber = () => {
         const currentPlayerName = players[turnIndex]?.name;
         return getPlayerNumber(currentPlayerName);
-    };
-
-    // Inicializar arrays basados en el tamaño de cuadrícula
+    };    // Inicializar arrays basados en el tamaño de cuadrícula
     useEffect(() => {
         const size = initialGridSize || 3;
         setGridSize(size);
@@ -57,7 +67,9 @@ const DotsBox = () => {
         setHorizontalLines(Array(size + 1).fill(null).map(() => Array(size).fill(false)));
         setVerticalLines(Array(size).fill(null).map(() => Array(size + 1).fill(false)));
         setBoxes(Array(size).fill(null).map(() => Array(size).fill(null)));
-    }, [initialGridSize]);    useEffect(() => {
+    }, [initialGridSize]);
+
+    useEffect(() => {
         if (players.length === 2) {
             // Inicializar scores con ambos jugadores
             const initialScores = {};
@@ -219,190 +231,129 @@ const DotsBox = () => {
         if (type === "v" && verticalLines[row] && verticalLines[row][col]) {
             console.log("Línea vertical ya marcada");
             return;
-        }
-
-        const move = { type, row, col };
+        }        const move = { type, row, col };
         console.log("Haciendo movimiento:", move);
         applyMove(move, null, null, true);
     };
 
-    const renderBoard = () => {
-        const board = [];
-
-        for (let r = 0; r < GRID_SIZE * 2 + 1; r++) {
-            const row = [];
-            for (let c = 0; c < GRID_SIZE * 2 + 1; c++) {
-                if (r % 2 === 0 && c % 2 === 0) {
-                    // Puntos (dots)
-                    row.push(<div key={`${r}-${c}`} className="dot" />);
-                } else if (r % 2 === 0) {
-                    // Líneas horizontales
-                    const rowIndex = r / 2;
-                    const colIndex = (c - 1) / 2;
-                    const isActive = horizontalLines[rowIndex] && horizontalLines[rowIndex][colIndex];
-                    row.push(
-                        <div
-                            key={`${r}-${c}`}
-                            className={`h-line ${isActive ? "taken" : ""}`}
-                            onClick={() => handleClick("h", rowIndex, colIndex)}
-                            style={{
-                                cursor: isMyTurn && !isActive ? "pointer" : "default",
-                                backgroundColor: isActive ? "#000" : "#ccc"
-                            }}
-                        />
-                    );
-                } else if (c % 2 === 0) {
-                    // Líneas verticales
-                    const rowIndex = (r - 1) / 2;
-                    const colIndex = c / 2;
-                    const isActive = verticalLines[rowIndex] && verticalLines[rowIndex][colIndex];
-                    row.push(
-                        <div
-                            key={`${r}-${c}`}
-                            className={`v-line ${isActive ? "taken" : ""}`}
-                            onClick={() => handleClick("v", rowIndex, colIndex)}
-                            style={{
-                                cursor: isMyTurn && !isActive ? "pointer" : "default",
-                                backgroundColor: isActive ? "#000" : "#ccc"
-                            }}
-                        />
-                    );
-                } else {
-                    // Cajas
-                    const boxRow = (r - 1) / 2;
-                    const boxCol = (c - 1) / 2;
-                    const boxOwner = boxes[boxRow] && boxes[boxRow][boxCol];
-                    row.push(
-                        <div
-                            key={`${r}-${c}`}
-                            className={`box ${boxOwner ? `player${getPlayerNumber(boxOwner)}` : ''}`}
-                            style={{
-                                backgroundColor: boxOwner ? (boxOwner === playerName ? "#e6f3ff" : "#ffe6e6") : "transparent",
-                                border: "1px solid #ddd"
-                            }}
-                        >
-                            {boxOwner ? boxOwner.charAt(0).toUpperCase() : ""}
-                        </div>
-                    );
-                }
-            }
-            board.push(
-                <div key={r} className="board-row">
-                    {row}
-                </div>
-            );
-        }
-
-        return board;
-    };
-
     if (!players || players.length < 2) {
         return (
-            <div className="game-container">
-                <h2>Esperando a que otro jugador se una...</h2>
-                <p>Jugadores conectados: {players.length}/2</p>
-                <p>Tu nombre: {playerName}</p>
-                <p>Código de sala: {roomCode}</p>
-                <p>Tamaño del tablero: {GRID_SIZE}x{GRID_SIZE}</p>
-            </div>
+            <Layout variant="gaming">
+                <WaitingRoom
+                    playerName={playerName}
+                    roomCode={roomCode}
+                    players={players}
+                    maxPlayers={2}
+                    gameType="dots-boxes"
+                    gridSize={GRID_SIZE}
+                    variant="glass"
+                />
+            </Layout>
         );
     }
 
     const totalBoxes = GRID_SIZE * GRID_SIZE;
     const completedBoxes = Object.values(scores).reduce((sum, score) => sum + score, 0);
     const gameFinished = completedBoxes === totalBoxes;
-    const currentPlayerName = players[turnIndex]?.name;    return (
-        <div className="game-container">
-            <h1 className="game-title">⚪ Dots & Boxes ⚪</h1>
-            <div className="game-info">
-                <p><strong>Sala:</strong> {roomCode}</p>
-                <p><strong>Tablero:</strong> {GRID_SIZE}x{GRID_SIZE}</p>
+    const currentPlayerName = players[turnIndex]?.name;
 
-                <div className={`turn-indicator player${getCurrentPlayerNumber()}`}>
-                    Turno de {currentPlayerName === playerName ? "Tú" : currentPlayerName}
-                </div>
+    return (
+        <Layout variant="gaming">
+            <div className="dots-box-game">
+                <GameInfo
+                    gameTitle="Dots & Boxes"
+                    gameIcon="⚪"
+                    roomCode={roomCode}
+                    players={players}
+                    currentPlayer={playerName}
+                    turnIndex={turnIndex}
+                    gridSize={GRID_SIZE}
+                    gameType="dots-boxes"
+                    gameFinished={gameFinished}
+                    scores={scores}
+                    variant="glass"
+                />
 
-                {gameFinished && <p><strong>¡Juego terminado!</strong></p>}
-            </div>            <div className="scores">
-                {players.map((p, index) => (
-                    <div key={p.name} className={`player${index + 1}`}>
-                        {p.name === playerName ? `${p.name} (tú)` : p.name}: {scores[p.name] || 0} puntos
-                    </div>
-                ))}
-            </div><div className="voice-controls">
-                <div className="voice-status">
-                    {isConnecting ? (
-                        <span className="connecting">🔄 Conectando audio...</span>
-                    ) : (
-                        <span className={`status ${connectionState}`}>
-                            📡 Audio: {connectionState === 'connected' ? 'Conectado' : 'Desconectado'}
-                        </span>
-                    )}
-                    
-                    {/* Indicador de estado del micrófono */}
-                    <div className="mic-status">
-                        <span className={`mic-indicator ${micEnabled ? 'active' : 'inactive'}`}>
-                            🎙️ Micrófono: {micEnabled ? 'Activo' : 'Desactivado'}
-                        </span>
-                    </div>
+                <VoiceControls
+                    micEnabled={micEnabled}
+                    audioEnabled={audioEnabled}
+                    toggleMic={toggleMic}
+                    toggleAudio={toggleAudio}
+                    isConnecting={isConnecting}
+                    connectionState={connectionState}
+                    forceEnableControls={forceEnableControls}
+                    reconnectVoice={reconnectVoice}
+                    variant="glass"
+                />
 
-                    {/* Botón de emergencia visible solo si los controles están bloqueados */}
-                    {isConnecting && (
-                        <button 
-                            onClick={() => forceEnableControls()}
-                            className="force-enable-btn"
-                            title="Usar solo si los controles se quedan bloqueados"
-                        >
-                            🚨 Forzar habilitación
-                        </button>
-                    )}
-                </div>
-                <div className="voice-buttons">
-                    <button 
-                        onClick={toggleMic} 
-                        className={`voice-btn mic-btn ${micEnabled ? 'active' : ''}`}
-                        disabled={isConnecting}
-                        title={micEnabled ? "Haz clic para silenciar tu micrófono" : "Haz clic para activar tu micrófono y comenzar a hablar"}
-                    >
-                        {micEnabled ? "🔇 Silenciar Micrófono" : "🎙️ Activar Micrófono"}
-                    </button>                    <button 
-                        onClick={toggleAudio} 
-                        className={`voice-btn audio-btn ${audioEnabled ? 'active' : ''}`}
-                        disabled={isConnecting}
-                        title={audioEnabled ? "Haz clic para silenciar el audio del oponente" : "Haz clic para activar el audio del oponente"}
-                    >
-                        {audioEnabled ? "🔈 Silenciar Audio" : "🔊 Activar Audio"}
-                    </button>
-
-                    {/* Botón de reconexión cuando falla la conexión */}
-                    {connectionState === 'failed' && (
-                        <button 
-                            onClick={reconnectVoice} 
-                            className="voice-btn reconnect-btn"
-                            disabled={isConnecting}
-                            title="La conexión de voz falló. Haz clic para intentar reconectar"
-                        >
-                            🔄 Reconectar Audio
-                        </button>
-                    )}
-                </div>
-                
-                {/* Mensaje informativo cuando el micrófono está desactivado */}
-                {!micEnabled && !isConnecting && (
-                    <div className="mic-info">
-                        <small>💡 Tu micrófono está desactivado por defecto. Haz clic en "Activar Micrófono" para hablar.</small>
-                    </div>
+                {!gameFinished && (
+                    <TurnIndicator
+                        isMyTurn={isMyTurn}
+                        currentPlayerName={currentPlayerName}
+                        currentPlayer={playerName}
+                        gameType="dots-boxes"
+                        variant="glass"
+                    />
                 )}
-            </div>
 
-            <div className="game-board">{renderBoard()}</div>
-            <div className="debug-info" style={{ marginTop: '20px', fontSize: '12px', color: '#666' }}>
-                <p>Tamaño del tablero: {GRID_SIZE}x{GRID_SIZE}</p>
-                <p>Cajas completadas: {completedBoxes}/{totalBoxes}</p>
-                <p>Turno actual: {turnIndex} ({players[turnIndex]?.name})</p>
-                <p>¿Es mi turno?: {isMyTurn ? 'Sí' : 'No'}</p>
+                <ScoreBoard
+                    players={players}
+                    scores={scores}
+                    currentPlayer={playerName}
+                    gameType="dots-boxes"
+                    variant="glass"
+                />
+
+                <DotsBoxBoard
+                    gridSize={GRID_SIZE}
+                    horizontalLines={horizontalLines}
+                    verticalLines={verticalLines}
+                    boxes={boxes}
+                    onLineClick={handleClick}
+                    isMyTurn={isMyTurn}
+                    players={players}
+                    currentPlayer={playerName}
+                    variant="glass"
+                />
+
+                {gameFinished && (
+                    <GameStatus
+                        gameEnded={gameFinished}
+                        winner={Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b)}
+                        isDraw={false}
+                        currentPlayer={playerName}
+                        onRestart={() => {
+                            // Implementar restart si es necesario
+                        }}
+                        gameType="dots-boxes"
+                        players={players}
+                        scores={scores}
+                        variant="glass"
+                    />
+                )}
+
+                <DebugPanel
+                    players={players}
+                    turnIndex={turnIndex}
+                    currentPlayer={playerName}
+                    isMyTurn={isMyTurn}
+                    gameEnded={gameFinished}
+                    connectionState={connectionState}
+                    isConnecting={isConnecting}
+                    micEnabled={micEnabled}
+                    audioEnabled={audioEnabled}
+                    customData={{
+                        'Grid Size': `${GRID_SIZE}x${GRID_SIZE}`,
+                        'Completed Boxes': `${completedBoxes}/${totalBoxes}`,
+                        'Scores': JSON.stringify(scores)
+                    }}
+                    show={showDebug}
+                    onToggle={() => setShowDebug(!showDebug)}
+                    variant="glass"
+                />
             </div>
-        </div>    );
+        </Layout>
+    );
 };
 
 export default DotsBox;

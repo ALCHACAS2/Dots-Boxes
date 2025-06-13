@@ -9,3 +9,14 @@ export { default as GameGrid } from './GameGrid';
 export { default as PlayerList } from './PlayerList';
 export { default as Alert } from './Alert';
 export { default as Spinner } from './Spinner';
+
+// Game-specific components
+export { default as GameInfo } from './GameInfo';
+export { default as VoiceControls } from './VoiceControls';
+export { default as GameStatus } from './GameStatus';
+export { default as WaitingRoom } from './WaitingRoom';
+export { default as TurnIndicator } from './TurnIndicator';
+export { default as ScoreBoard } from './ScoreBoard';
+export { default as GameBoard } from './GameBoard';
+export { default as DotsBoxBoard } from './DotsBoxBoard';
+export { default as DebugPanel } from './DebugPanel';
