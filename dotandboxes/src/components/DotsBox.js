@@ -1,12 +1,12 @@
-// src/components/GameBoard.js
+// src/components/DotsBox.js
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSocket } from "../contexts/SocketContext";
 import { useVoiceChat } from "../hooks/useVoice";
 
-import "./GameBoard.css";
+import "./DotsBox.css";
 
-const GameBoard = () => {
+const DotsBox = () => {
     const location = useLocation();
     const { playerName, roomCode, players = [], gridSize: initialGridSize = 3 } = location.state || {};
     const socket = useSocket(); // ✅ primero obtenés el socket
@@ -402,8 +402,7 @@ const GameBoard = () => {
                 <p>Turno actual: {turnIndex} ({players[turnIndex]?.name})</p>
                 <p>¿Es mi turno?: {isMyTurn ? 'Sí' : 'No'}</p>
             </div>
-        </div>
-    );
+        </div>    );
 };
 
-export default GameBoard;
+export default DotsBox;
